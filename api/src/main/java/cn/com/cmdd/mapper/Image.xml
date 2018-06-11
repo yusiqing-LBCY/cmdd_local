@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.cmdd.dao.ImageDao">
+	<select id="getImage" resultType="Image">
+		SELECT id, origin_name, file_size
+		FROM images
+		WHERE id = #{0}
+	</select>
+	
+	<update id="updateImage">
+		UPDATE images
+		SET origin_name = COALESCE(#{origin_name},origin_name),
+			file_size = COALESCE(#{file_size},file_size)
+		WHERE id = #{id}
+	</update>
+	
+	<insert id="addImage" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO images(origin_name, file_size, create_time) 
+		VALUES (#{origin_name}, #{file_size}, now())
+	</insert>
+	
+	<delete id="deleteImage">
+		DELETE 
+		FROM images
+		WHERE id=#{0}
+	</delete>
+	
+</mapper>

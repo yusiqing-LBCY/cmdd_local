@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.cmdd.dao.StaffDao">
+	
+	<!-- <select id="getStaffListByShop_id" resultType="Staff">
+		SELECT * FROM staff WHERE shop_id = #{shop_id} ORDER BY id
+	</select> -->
+	
+	
+	<select id="getStaffListByShop_id" resultType="Staff">
+		SELECT  s.id, 
+				s.shop_id, 
+				s.account, 
+				s.name, 
+				s.sex,
+				s.phone,
+				s.password, 
+				s.is_in_use, 
+				s.create_time, 
+				s.last_login_time, 
+				u.user_key AS user_key	
+		FROM staff AS s INNER JOIN user AS u ON s.id = u.user_id
+		
+		WHERE s.shop_id = #{0}  AND s.account = u.account
+		
+	</select>
+	
+	
+	<select id="getStaffList" resultType="Staff">
+		SELECT * FROM staff ORDER BY id
+	</select>
+	
+	
+	<insert id="addStaff" parameterType="Staff" useGeneratedKeys="true" keyProperty="id">
+		INSERT into staff(shop_id,account,name,sex,phone,password,is_in_use,create_time,last_login_time) 
+		VALUES (#{shop_id},#{account},#{name},#{sex},#{phone},#{password},#{is_in_use},now(),now())
+	</insert>
+	
+	
+	<select id="getStaffById" resultType="Staff">
+		SELECT  s.id, 
+				s.shop_id, 
+				s.account, 
+				s.name,
+				s.sex,
+				s.phone, 
+				s.password, 
+				s.is_in_use, 
+				s.create_time, 
+				s.last_login_time, 
+				u.user_key AS user_key
+		FROM staff AS s INNER JOIN user AS u ON s.id = u.user_id
+		WHERE s.id = #{0} AND s.account = u.account
+	</select>
+	
+	
+	<!-- <update id="updateStaff" parameterType="Staff">
+		UPDATE staff 
+		SET shop_id = COALESCE(#{shop_id},shop_id),
+			name=COALESCE(#{name},name),
+			sex=COALESCE(#{sex},sex),
+			phone = COALESCE(#{phone},phone),
+			is_in_use=COALESCE(#{is_in_use},is_in_use),
+			create_time=COALESCE(#{create_time},create_time),
+			last_login_time=COALESCE(#{last_login_time},last_login_time)
+		WHERE id = #{id}
+	</update> -->
+	
+	<update id="updateStaff" parameterType="Staff">
+		UPDATE staff s,user u 
+		SET s.shop_id = COALESCE(#{shop_id},shop_id),
+			s.name=COALESCE(#{name},name),
+			s.sex=COALESCE(#{sex},sex),
+			s.phone = COALESCE(#{phone},phone),
+			s.is_in_use=COALESCE(#{is_in_use},is_in_use),
+			s.last_login_time=COALESCE(#{last_login_time},last_login_time),
+			u.user_key = COALESCE(#{user_key},user_key)
+		WHERE s.account = u.account AND s.id = #{id}
+	</update>
+	
+	
+	<delete id="deleteStaff">	
+		DELETE 
+		FROM staff
+		WHERE id = #{id}
+	</delete>
+
+	<update id="updateStaffPassword">
+		UPDATE staff 
+		SET password = #{1}
+		WHERE id = #{0}
+	</update>
+	
+	<update id="updateShopPassword">
+		UPDATE shop 
+		SET password = #{1}
+		WHERE id = #{0}
+	</update>
+	
+</mapper>
+
+
+
+
+ 

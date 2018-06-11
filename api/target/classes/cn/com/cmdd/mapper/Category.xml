@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.cmdd.dao.CategoryDao">
+	<insert id="saveCategory" parameterType="Category" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO category 
+		VALUES(
+			#{id},#{shop_id},#{name},#{is_enable}
+		)
+	</insert>
+	
+	<delete id="deleteCategory" parameterType="Integer">
+		DELETE	
+		FROM category
+		WHERE id=#{id} 
+	</delete>
+		
+	<update id="updateCategory" parameterType="Category">
+		UPDATE category 
+		SET  
+			 shop_id=COALESCE(#{shop_id},shop_id),			
+			 name =COALESCE(#{name},name),			
+			 is_enable =COALESCE(#{is_enable},is_enable)
+		WHERE id=#{id}
+	</update>
+	
+	<select id="getCategory" resultType="Category">
+		SELECT id,shop_id,name,is_enable
+		FROM category
+		<trim prefix="WHERE" >
+			<if test="shop_id!=null">
+				shop_id=#{shop_id}
+			</if>
+			<if test="id!=null">
+				id=#{id}
+			</if>
+		</trim>
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 同步数据  -->
+	<select id="selectByIsUpload" resultType="Category">
+		SELECT 
+			id,shop_id,name,is_enable
+		FROM 
+			category
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			category
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
+	</update>
+	
+</mapper>

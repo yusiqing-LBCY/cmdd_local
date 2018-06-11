@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.cmdd.dao.OrderItemDao">	
+	<insert id="insert" parameterType="OrderItem" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			order_product_log(
+				order_id,
+				product_id,
+				category_id,
+				shop_id,
+				quantity,				
+				status_id,
+				status_pay,
+				is_lottery,
+				create_time,
+				money_preferential_discount,
+				pay_time,
+				back_time,
+				description
+				)
+		VALUES(
+			   #{order_id},
+		 	   #{product_id},		 	   
+		 	   #{category_id},
+		 	   #{shopId},
+		 	   #{quantity},
+		 	   #{status_id},
+		 	   #{status_pay},	 	   		 	   
+		 	   #{is_lottery},	 	   
+		 	   now(),
+		 	   #{moneyPreferentialDiscount},
+		 	   #{pay_time},
+		 	   #{back_time},
+		 	   #{description}
+		 	   )
+	</insert>
+	
+	<delete id="delete" parameterType="Integer">
+		DELETE 
+		FROM 
+			order_product_log
+		WHERE 
+			id=#{id}
+	</delete>
+	
+	<delete id="deleteByOrderId" parameterType="Integer">
+		DELETE
+		FROM 
+			order_product_log
+		WHERE 
+			order_id = #{orderId}		
+	</delete>
+			
+	<update id="update" parameterType="OrderItem">
+		UPDATE 
+			order_product_log 
+		SET 
+		   order_id		=   COALESCE(#{order_id},order_id),
+		   product_id  	= 	COALESCE(#{product_id},product_id),
+		   category_id	=	COALESCE(#{category_id},category_id),
+		   shop_id		=	COALESCE(#{shopId},shop_id),
+		   quantity 	= 	COALESCE(#{quantity},quantity),		 
+		   description 	= 	COALESCE(#{description},description),
+		   create_time  = 	COALESCE(#{create_time},create_time),
+		   status_id 	= 	COALESCE(#{status_id},status_id),
+		   <if test="status_pay==1">
+		   		 pay_time	= 	now(),
+		   </if>
+		   <if test="status_pay==2">	   
+		   		 pay_time	=	now(),
+		   </if>		  
+		   is_lottery   = 	COALESCE(#{is_lottery},is_lottery),
+		   money_preferential_discount	=	COALESCE(#{moneyPreferentialDiscount},money_preferential_discount)
+		WHERE 
+			id=#{id}
+	</update>	
+	
+	
+	<select id="select" resultType="OrderItem" >
+		SELECT
+			id,
+			order_id,
+			product_id,
+			category_id,
+			shop_id shopId,
+			quantity,
+			status_id,
+			description,
+			create_time,
+			pay_time,
+			back_time,
+			is_lottery,
+			status_pay,
+			money_preferential_discount moneyPreferentialDiscount
+		FROM
+			order_product_log
+		WHERE
+			id=#{id}
+	</select>
+		 
+	<select id="getOrderItemCount"  resultType="ProductCount" >
+		<if test="sumField!=null">
+		SELECT	
+			p.id,
+			p.logo_id,
+			p.name,
+			p.is_promotion,
+			p.unit_price,
+			p.promotion_price,
+			c.name category_name,
+			SUM(${sumField}) sumCount
+		FROM
+			(
+		</if>
+			
+				SELECT					
+					<if test="is_lottery==null">
+						opl.id,
+						opl.product_id,
+						opl.quantity
+					</if>	
+									
+					<if test="is_lottery==1">
+						p.id,						
+						p.unit_price,
+						p.promotion_price,	
+						p.is_promotion,
+						opl.quantity quantity
+					</if>
+				FROM
+					order_product_log opl 
+						JOIN 
+							product p
+				ON
+					opl.product_id 	= p.id						
+				<trim prefix="WHERE" prefixOverrides="and">
+							 								
+					<if test="shop_id!=null">
+						and p.shop_id = #{shop_id}
+					</if>
+					<if test="category_id!=null">
+						and opl.category_id = #{category_id}
+					</if>
+					<if test="product_id!=null">
+						and opl.product_id = #{product_id}
+					</if>
+					<if test="start_time!=null">
+						and unix_timestamp(opl.pay_time) between unix_timestamp(#{start_time}) and unix_timestamp(#{end_time})
+					</if>
+					<if test="is_lottery!=null">
+						and opl.is_lottery	=	#{is_lottery}
+					</if>
+					<if test="status_pay !=null">
+						and	opl.status_pay 	=	#{status_pay }
+					</if>
+						and opl.status_id != 6 
+						
+						and opl.status_id != 7												 								
+				</trim>
+					
+				GROUP BY opl.id
+			
+		<if test="sumField!=null">
+			)n,
+			
+				product p,
+					category c
+			where n.product_id = p.id and p.category_id=c.id
+			GROUP BY n.product_id
+			ORDER BY p.category_id
+		</if>
+	</select>
+	
+	<select id="getOrderItem" resultType="OrderItem" >
+		SELECT
+			id,
+			order_id,
+			product_id,
+			category_id,
+			shopId,
+			quantity,
+			status_id,
+			description,
+			create_time,
+			pay_time,
+			back_time,
+			is_lottery,
+			status_pay
+		FROM
+			order_product_log
+		<trim prefix="WHERE" prefixOverrides="and">
+			<if test="id!=null">
+				id = #{id}
+			</if>
+			<if test="order_id!=null">
+				order_id = #{order_id}
+			</if>
+			<if test="category_id!=null">
+				and category_id = #{category_id}
+			</if>
+			<if test="product_id!=null">
+				and product_id = #{product_id}
+			</if>
+			<if test="start_time!=null">
+				and unix_timestamp(pay_time) between unix_timestamp(#{start_time}) and unix_timestamp(#{end_time})
+			</if>
+		</trim>
+		ORDER BY id ASC
+	</select>
+		
+	<select id="selectListByOrderId" resultType="OrderItem" >
+		SELECT
+			id,
+			order_id,
+			product_id,
+			category_id,
+			shop_id shopId,
+			quantity,
+			status_id,
+			description,
+			create_time,
+			pay_time,
+			back_time,
+			is_lottery,
+			status_pay,
+			money_preferential_discount moneyPreferentialDiscount
+		FROM 
+			order_product_log
+		WHERE 
+			order_id=#{orderId}
+	</select>
+
+	<!-- <select id="selectPayable" resultType="Double">
+		SELECT
+			<if test="isPromotion==0">
+				sum( opl.quantity * p.unit_price ) payble
+			</if>
+			<if test="isPromotion==1">
+				sum( opl.quantity * p.promotion_price ) payble
+			</if>
+		FROM
+			order_product_log opl
+			JOIN product p ON opl.product_id = p.id
+		WHERE
+			p.is_promotion = #{isPromotion}
+			AND p.is_member_integral = #{isMemberIntegral}
+			AND opl.is_lottery = #{isLottery}
+			AND opl.order_id = #{orderId}
+	</select> -->
+	
+	
+	<select id="selectSUMmoneyPreferentialDiscount" resultType="Double">
+		SELECT 
+			COALESCE(SUM(money_preferential_discount),0.00)
+		FROM
+			order_product_log	
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="shopId!=null">
+				shop_id = #{shopId}
+			</if>
+			<if test="startTime!=null">
+				AND UNIX_TIMESTAMP(pay_time) BETWEEN UNIX_TIMESTAMP(#{startTime}) AND UNIX_TIMESTAMP(#{endTime})
+			</if>
+		</trim>				
+	</select>
+	
+</mapper>

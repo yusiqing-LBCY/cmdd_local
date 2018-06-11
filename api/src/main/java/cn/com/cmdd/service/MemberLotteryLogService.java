@@ -1,0 +1,75 @@
+package cn.com.cmdd.service;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.com.cmdd.dao.MemberLotteryLogDao;
+import cn.com.cmdd.domain.MemberLotteryLog;
+
+import java.util.List;
+
+@Service
+public class MemberLotteryLogService {
+	private final static Logger LOGGER = LoggerFactory.getLogger(MemberLotteryLogService.class);
+	
+	@Autowired
+	private MemberLotteryLogDao memberLotteryLogDao;
+	
+	
+	
+	
+	@Transactional
+	public Integer addMemberLotteryLog(MemberLotteryLog memberLotteryLog)throws Exception{
+		
+		int order_id = memberLotteryLog.getOrder_id();
+		List<MemberLotteryLog> memberLotteryLogListByOrderId = memberLotteryLogDao.getMemberLotteryLogListByOrderId(order_id);
+		int num = memberLotteryLogListByOrderId.size();
+		
+		if(num>0){
+			throw new Exception("您已抽过奖品，请下次再试");
+		}
+		
+		memberLotteryLogDao.addMemberLotteryLog(memberLotteryLog);
+		return memberLotteryLog.getId();
+	}	
+	
+	
+	@Transactional
+	public void deleteMemberLotteryLog(int id){
+		
+		 memberLotteryLogDao.deleteMemberLotteryLog(id);
+	}
+	
+	
+	@Transactional
+	public MemberLotteryLog getMemberLotteryLog(int id){
+		
+		return memberLotteryLogDao.getMemberLotteryLogById(id);
+	}
+	
+	@Transactional
+	public List<MemberLotteryLog> getMemberLotteryLogListByPhoneAndShopId(int shop_id ,String phone){
+		
+		return memberLotteryLogDao.getMemberLotteryLogListByPhoneAndShopId(shop_id,phone);
+	}
+
+	
+	@Transactional
+	public void updateMemberLotteryLog(MemberLotteryLog memberLotteryLog){
+	
+		memberLotteryLogDao.updateMemberLotteryLog(memberLotteryLog);
+	}
+	
+	@Transactional
+	public MemberLotteryLog getMemberLotteryLogByOrderId(int order_id){
+	
+		return memberLotteryLogDao.getMemberLotteryLogByOrderId(order_id);
+	}
+	
+	
+	
+}
