@@ -114,6 +114,7 @@
 			pay_code_id 		= 	COALESCE(#{pay_code_id},pay_code_id),
 			name 				= 	COALESCE(#{name},name),
 			id_card 			= 	COALESCE(#{id_card},id_card),
+			
 			sex					=	COALESCE(#{sex},sex),
 			phone 				= 	COALESCE(#{phone},phone),
 			shop_name			=	COALESCE(#{shop_name},shop_name),
@@ -126,7 +127,8 @@
 			create_time			=	COALESCE(#{create_time},create_time),
 			last_login_time		=	COALESCE(#{last_login_time},last_login_time),
 			contactPerson		=	COALESCE(#{contactPerson},contactPerson),
-			is_use_service		=	COALESCE(#{is_use_service},is_use_service),	
+			is_use_service		=	COALESCE(#{is_use_service},is_use_service),
+				
 			service_charge		=	COALESCE(#{service_charge},service_charge)		
 		WHERE id = #{id}
 	</update>

@@ -12,13 +12,13 @@ public class PrintJob {
 	private String order_no;
 	private String ding_table_name;
 	private String product_name;
-	private Integer category_id;
+	private Long category_id;
 	private String category_name;
 	private Double quantity;
 	private String unit;
 	private String description;
 	private String printer_name;
-	private Integer orderItem_id;
+	private Long orderItem_id;
 	private String table_runner;
 	private Integer status_id;
 	private Integer page_width;
@@ -53,10 +53,10 @@ public class PrintJob {
 	public void setProduct_name(String product_name) {
 		this.product_name = product_name;
 	}
-	public Integer getCategory_id() {
+	public Long getCategory_id() {
 		return category_id;
 	}
-	public void setCategory_id(Integer category_id) {
+	public void setCategory_id(Long category_id) {
 		this.category_id = category_id;
 	}
 	public String getCategory_name() {
@@ -89,10 +89,10 @@ public class PrintJob {
 	public void setPrinter_name(String printer_name) {
 		this.printer_name = printer_name;
 	}
-	public Integer getOrderItem_id() {
+	public Long getOrderItem_id() {
 		return orderItem_id;
 	}
-	public void setOrderItem_id(Integer orderItem_id) {
+	public void setOrderItem_id(Long orderItem_id) {
 		this.orderItem_id = orderItem_id;
 	}
 	public String getTable_runner() {

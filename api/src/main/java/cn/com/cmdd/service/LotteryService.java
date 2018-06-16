@@ -20,21 +20,20 @@ public class LotteryService {
 	private LotteryDao lotteryDao;
 
 	@Transactional
-	public Integer addLottery(Lottery lottery){
+	public void addLottery(Lottery lottery){
 		
 		lotteryDao.addLottery(lottery);
 		
-		return lottery.getId();
 	}
 	
 	@Transactional
-	public Lottery getLotteryById(int id){
+	public Lottery getLotteryById(Long id){
 		
 		return lotteryDao.getLotteryById(id);
 	}
 	
 	@Transactional
-	public List<Lottery> getLotteryListByShop_id(int lottery_id){
+	public List<Lottery> getLotteryListByShop_id(Integer lottery_id){
 		
 		return lotteryDao.getLotteryListByShop_id(lottery_id);
 	}

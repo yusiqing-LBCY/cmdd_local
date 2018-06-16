@@ -4,11 +4,15 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("Printer")
 public class Printer {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private Integer shop_id;
-	private Integer printer_type;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long printer_type;
 	//打印机名称
 	private String name;
 	/*
@@ -18,10 +22,10 @@ public class Printer {
 	private String category_name;
 	private Integer page_width;
 		
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Integer getShop_id() {
@@ -30,14 +34,14 @@ public class Printer {
 	public void setShop_id(Integer shop_id) {
 		this.shop_id = shop_id;
 	}
-	public Integer getPrinter_type() {
+	public Long getPrinter_type() {
 		return printer_type;
 	}
-	public void setPrinter_type(Integer printer_type) {
+	public void setPrinter_type(Long printer_type) {
 		this.printer_type = printer_type;
-		if(printer_type==888){
+		if(printer_type==888L){
 			this.category_name="后厨";
-		}else if(printer_type==999){
+		}else if(printer_type==999l){
 			this.category_name="结账单";
 		}
 	}

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import cn.com.cmdd.constant.KEYS;
+import cn.com.cmdd.dao.KitchenDao;
 import cn.com.cmdd.domain.Kitchen;
 import cn.com.cmdd.service.KitchenService;
 import cn.com.cmdd.util.ResponseObject;
@@ -23,23 +24,24 @@ public class KitchenController {
 
 	@Autowired
 	private KitchenService kitchenService;
+	@Autowired
+	private KitchenDao kitchenDao;
 
 	@RequestMapping(value="/kitchen",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseObject addKitchen(HttpServletRequest request,
-									 HttpServletResponse response,
-									 @RequestBody Kitchen kitchen){
+	public ResponseObject addKitchen(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Kitchen kitchen)
+	{
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
 		}*/
 		
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try{
-			Integer id = kitchenService.addKitchen(kitchen);
+			kitchenService.addKitchen(kitchen);
 			
-			Map<String,Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("kitchen_id", id);
-			responseObject.msg = resultMap;
 		}catch(Exception e){
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -51,7 +53,11 @@ public class KitchenController {
 	
 	@RequestMapping(value="/kitchen/{id}",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getKitchen(HttpServletRequest request, HttpServletResponse response,@PathVariable("id")int id){
+	public ResponseObject getKitchen(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
 		}*/
@@ -85,7 +91,12 @@ public class KitchenController {
 	
 	@RequestMapping(value="/kitchen/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject updateKitchen(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id, @RequestBody Kitchen kitchen){
+	public ResponseObject updateKitchen(
+			HttpServletRequest request, 
+			HttpServletResponse response, 
+			@PathVariable("id")Long id, 
+			@RequestBody Kitchen kitchen)
+	{
 		if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
 		}
@@ -108,7 +119,11 @@ public class KitchenController {
 	
 	@RequestMapping(value="/kitchen/{id}",method=RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseObject deleteAddress(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id){
+	public ResponseObject deleteAddress(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 		/*if(!AuthCheck.UserCheck(request, response,KEYS.SHOP)){
 			return null;
 		}*/
@@ -123,5 +138,51 @@ public class KitchenController {
 		return responseObject;
 	}
 	
+	@RequestMapping(value="/kitchen/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=kitchenDao.selectByIsUpload();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/kitchen/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response
+			,@PathVariable("id")Long id)
+	{
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			kitchenDao.updateIsUpload(id);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
 	
 }

@@ -2,9 +2,6 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 /**
  *商铺订单统计
  */

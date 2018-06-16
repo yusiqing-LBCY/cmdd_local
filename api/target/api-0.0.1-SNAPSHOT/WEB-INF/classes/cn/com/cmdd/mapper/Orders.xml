@@ -3,14 +3,16 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.cmdd.dao.OrdersDao">
 	<!--基础信息:仅录入基本信息-->
-	<insert id="saveOrders" parameterType="Orders" useGeneratedKeys="true" keyProperty="id">
+	<insert id="saveOrders" parameterType="Orders">
 		INSERT INTO 
-			orders(	order_no,
-					order_pno,
-					shop_id,
-					serial_id,
-					dining_table_id,
-					table_runner,
+			orders(
+					id ,
+					order_no ,
+					order_pno ,
+					shop_id ,
+					serial_id ,
+					dining_table_id ,
+					table_runner ,
 					create_time,
 					total_free,
 					real_pay,
@@ -37,7 +39,8 @@
 					trade_creditCard,
 					type_hypotaxis
 					)
-			VALUES(			
+			VALUES(		
+					UUID_SHORT(),
 					#{order_no},
 					#{orderPno},
 					#{shop_id},
@@ -568,4 +571,57 @@
 		</trim>	
 		
 	</select>
+	
+	<select id="selectByIsUpload" resultType="Orders">
+		SELECT
+			id,
+			order_no,
+			order_pno orderPno,
+			shop_id,
+			serial_id,
+			dining_table_id,
+			table_runner,
+			create_time,
+			total_free,
+			real_pay,
+			pay_time,
+			back_time,
+			type_pay pay_type,
+			pay_person,
+			status_id,
+			description,
+			discount,
+			residue,
+			income,
+			odd,
+			service_charge,
+			member_id memberId,
+			member_identifier memberIdentifier,
+			member_card_name memberCardName,
+			member_card_discount memberCardDiscount,
+			trade_member_integral tradeMemberIntegral,
+			trade_member_money tradeMemberMoney,
+			trade_cash	tradeCash,
+			trade_wechat tradeWechat,
+			trade_alipay tradeAlipay,
+			trade_creditCard tradeCreditCard,
+			type_hypotaxis typeHypotaxis,
+			is_use_member isUseMember,
+			discount_preferential_money	discountPreferentialMoney,
+			is_upload isUpload
+		FROM 
+			orders
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			Orders
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{id}
+	</update>
+	
 </mapper>

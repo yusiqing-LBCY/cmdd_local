@@ -82,7 +82,7 @@ public class OrdersController{
 									@PathVariable("id")	Integer shop_id,
 									Integer page_no,
 									Integer page_size,
-									Integer dining_id,
+									Long dining_id,
 									String type,
 									@DateTimeFormat(pattern="yyyy-MM-dd")Date start_time,
 									@DateTimeFormat(pattern="yyyy-MM-dd")Date end_time,
@@ -140,7 +140,7 @@ public class OrdersController{
 	@ResponseBody
 	public ResponseObject getOrders(HttpServletRequest request,
 									HttpServletResponse response,
-									@PathVariable("id")Integer id)
+									@PathVariable("id")Long id)
 	{
 											
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
@@ -152,7 +152,7 @@ public class OrdersController{
 				List<OrderItem> orderItemList = orderItemDao.selectListByOrderId(orders.getId());
 				if(orderItemList.size()>0){
 					for (OrderItem orderItem : orderItemList){
-						Integer productId = orderItem.getProduct_id();
+						Long productId = orderItem.getProduct_id();
 						Product product = productDao.select(productId);
 						orderItem.setP(product);
 					}
@@ -179,7 +179,7 @@ public class OrdersController{
 	public ResponseObject getDining_tableStatus_idIs0Orders(
 															HttpServletRequest request,
 															HttpServletResponse response,
-															@PathVariable("id")Integer dining_table_id)
+															@PathVariable("id")Long dining_table_id)
 	{
 														
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);		
@@ -248,7 +248,7 @@ public class OrdersController{
 	
 										HttpServletRequest request,
 										HttpServletResponse response,
-										@PathVariable("id")	Integer id,
+										@PathVariable("id")	Long id,
 										@RequestBody Orders orders
 										){
 									
@@ -274,7 +274,7 @@ public class OrdersController{
 	public ResponseObject deleteOrder_product(	
 												HttpServletRequest request,
 												HttpServletResponse response,
-												@PathVariable("id")Integer orderId)
+												@PathVariable("id")Long orderId)
 	{
 
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
@@ -370,7 +370,7 @@ public class OrdersController{
 	 */
 	@RequestMapping(value="/clearDiningTable/diningTable/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject clearDiningTable(@PathVariable("id") Integer diningTableId){
+	public ResponseObject clearDiningTable(@PathVariable("id") Long diningTableId){
 
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 
@@ -390,8 +390,8 @@ public class OrdersController{
 	}
 	
 	/**开桌*/
-	private static Map<Integer,Integer> map= new ConcurrentHashMap<Integer,Integer>();
-	private boolean isCache(Integer diningTableId) {
+	private static Map<Long,Long> map= new ConcurrentHashMap<Long,Long>();
+	private boolean isCache(Long diningTableId) {
 		synchronized (map) {
 			if(map.containsKey(diningTableId)) {
 				return true;
@@ -403,7 +403,7 @@ public class OrdersController{
 	}
 	@RequestMapping(value="/openTable/diningTable/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject openTable(@PathVariable("id")Integer diningTableId,@RequestBody Orders orders){
+	public ResponseObject openTable(@PathVariable("id")Long diningTableId,@RequestBody Orders orders){
 			
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
@@ -472,7 +472,7 @@ public class OrdersController{
 	
 	@RequestMapping(value="/isUpload/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject updateIsUpload(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id)
+	public ResponseObject updateIsUpload(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Long id)
 	{
 														
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);		

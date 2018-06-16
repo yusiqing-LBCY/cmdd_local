@@ -60,7 +60,7 @@ public class AgentService {
 		agentDao.addAgent(agent);
 		User user = new User();
 		user.setAccount(agent.getAccount());
-		user.setUser_id(agent.getId());
+		user.setUser_id(agent.getId().longValue());
 		user.setUser_key(agent.getUser_key());
 		userDao.addUser(user);
 		return agent.getId();

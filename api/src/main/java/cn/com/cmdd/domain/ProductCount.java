@@ -3,10 +3,12 @@ package cn.com.cmdd.domain;
 
 
 import org.apache.ibatis.type.Alias;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 @Alias("ProductCount")
 public class ProductCount {
-	private int id;
-	private int logo_id;
+	private Long id;
+	private Long logo_id;
 	private String name;
 	private String category_name ;
 	private double sumCount;
@@ -15,39 +17,19 @@ public class ProductCount {
 	private double promotion_price;
 	private double quantity;	
 	private double sumIsLottery;
-
-	public ProductCount() {
-		super();
-		// TODO Auto-generated constructor stub
-	}		
-	public ProductCount(int id, int logo_id, String name, String category_name, double sumCount, int is_promotion,
-			double unit_price, double promotion_price, double quantity, double sumIsLottery) {
-		super();
-		this.id = id;
-		this.logo_id = logo_id;
-		this.name = name;
-		this.category_name = category_name;
-		this.sumCount = sumCount;
-		this.is_promotion = is_promotion;
-		this.unit_price = unit_price;
-		this.promotion_price = promotion_price;
-		this.quantity = quantity;
-		this.sumIsLottery = sumIsLottery;
-	}
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public int getLogo_id() {
+	public Long getLogo_id() {
 		return logo_id;
 	}
 
-	public void setLogo_id(int logo_id) {
+	public void setLogo_id(Long logo_id) {
 		this.logo_id = logo_id;
 	}
 

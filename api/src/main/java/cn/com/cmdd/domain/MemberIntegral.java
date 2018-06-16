@@ -2,16 +2,28 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("MemberIntegral")
 public class MemberIntegral {
-
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
     private Integer shopId;
     private Double consumeMoney;
     private Double consumeIntegral;
     private Double convertMoney;
     private Double convertIntegral;
+    
+    
+    public Long getId() {
+		return id;
+	}
 
-    public Integer getShopId() {
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getShopId() {
         return shopId;
     }
 

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import cn.com.cmdd.dao.MemberLotteryLogDao;
 import cn.com.cmdd.domain.MemberLotteryLog;
 import cn.com.cmdd.service.MemberLotteryLogService;
 import cn.com.cmdd.util.ResponseObject;
@@ -23,20 +24,69 @@ public class MemberLotteryLogController {
 
 	@Autowired
 	private MemberLotteryLogService memberLotteryLogService;
+	
+	@Autowired
+	private MemberLotteryLogDao memberLotteryLogDao;
 
+	@RequestMapping(value="/memberLottery/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=memberLotteryLogDao.selectByIsUpload();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/memberLottery/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			memberLotteryLogDao.updateIsUpload(id);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
 	@RequestMapping(value="/lottery-phone",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseObject addMemberLotteryLog(HttpServletRequest request,
-											  HttpServletResponse response,
-											  @RequestBody MemberLotteryLog memberLotteryLog){
+	public ResponseObject addMemberLotteryLog(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody MemberLotteryLog memberLotteryLog)
+	{
 		
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try{
-			Integer id = memberLotteryLogService.addMemberLotteryLog(memberLotteryLog);
+			memberLotteryLogService.addMemberLotteryLog(memberLotteryLog);
 			
-			Map<String,Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("memberLotteryLog_id", id);
-			responseObject.msg = resultMap;
 		}catch(Exception e){
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -48,11 +98,15 @@ public class MemberLotteryLogController {
 	
 	@RequestMapping(value="/lottery-phone/{id}",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getMemberLotteryLog(HttpServletRequest request, HttpServletResponse response,@PathVariable("id")int id){
+	public ResponseObject getMemberLotteryLog(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 		
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try {
-			responseObject.msg = memberLotteryLogService.getMemberLotteryLog(id);
+			memberLotteryLogService.getMemberLotteryLog(id);
 		} catch (Exception e) {
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -64,10 +118,14 @@ public class MemberLotteryLogController {
 	
 	@RequestMapping(value="/lottery-order/{order_id}",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getMemberLotteryLogByOrderId(HttpServletRequest request, HttpServletResponse response,@PathVariable("order_id")int order_id){
+	public ResponseObject getMemberLotteryLogByOrderId(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			@PathVariable("order_id")Long order_id)
+	{
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try {
-			responseObject.msg = memberLotteryLogService.getMemberLotteryLogByOrderId(order_id);
+			memberLotteryLogService.getMemberLotteryLogByOrderId(order_id);
 		} catch (Exception e) {
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -94,7 +152,7 @@ public class MemberLotteryLogController {
 	
 	@RequestMapping(value="/lottery-phone/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject updateMemberLotteryLog(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id, @RequestBody MemberLotteryLog memberLotteryLog){
+	public ResponseObject updateMemberLotteryLog(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id, @RequestBody MemberLotteryLog memberLotteryLog){
 
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		try {
@@ -114,7 +172,10 @@ public class MemberLotteryLogController {
 	
 	@RequestMapping(value="/lottery-phone/{id}",method=RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseObject deleteAddress(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id){
+	public ResponseObject deleteAddress(HttpServletRequest request, 
+			HttpServletResponse response, 
+			@PathVariable("id")Long id)
+	{
 
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try {

@@ -81,10 +81,11 @@
 		</trim>		
 	</select>
 	
-	<insert id="addMemberRechargeLog" parameterType="MemberRechargeLog" useGeneratedKeys="true" keyProperty="id">
+	<insert id="addMemberRechargeLog" parameterType="MemberRechargeLog">
 		INSERT
 		INTO
 			member_recharge_log(
+				id,
 				member_id,
 				shop_id,
 				amount,
@@ -99,6 +100,7 @@
 				description
 				)
 		VALUES (
+				UUID_SHORT(),
 				#{member_id},
 				#{shop_id},
 				#{amount},
@@ -122,6 +124,36 @@
 			pay_type=COALESCE(#{pay_type},pay_type),
 			now_balance=COALESCE(#{now_balance},now_balance)			
 		WHERE id = #{id}
+	</update>
+	
+	<!-- 同步数据  -->
+	<select id="selectByIsUpload" resultType="MemberRechargeLog">
+		SELECT 
+			id,
+			member_id,
+			shop_id,
+			amount,
+			pay_type,
+			create_time,
+			now_balance,
+			trade_integral trade_integral,
+			integral,
+			type,
+			description,
+			give_amount giveAmount
+		FROM 
+			Member_Recharge_Log
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			Member_Recharge_Log
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
 	</update>
 
 </mapper>

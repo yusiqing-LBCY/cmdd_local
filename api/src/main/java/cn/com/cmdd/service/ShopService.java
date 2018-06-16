@@ -70,7 +70,7 @@ public class ShopService {
 		shopDao.addShop(shop);
 		User user = new User();
 		user.setAccount(shop.getAccount());
-		user.setUser_id(shop.getId());
+		user.setUser_id(shop.getId().longValue());
 		user.setUser_key(shop.getUser_key());
 		userDao.addUser(user);
 		
@@ -148,7 +148,7 @@ public class ShopService {
 	@Transactional
 	public void updateShopPayCodeId(Shop shop){
 		
-			imagedDao.deleteImage(shop.getPay_code_id());
+			imagedDao.delete(shop.getPay_code_id());
 			shop.setPay_code_id(null);
 			shopDao.updateShopPayCodeId(shop);
 		

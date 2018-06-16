@@ -4,13 +4,18 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("Product")
 public class Product {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private Integer shop_id;
-	private Integer category_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long category_id;
 		private String category_name;
-	private Integer logo_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)	
+	private Long logo_id;
 	private String name;
 	private Double unit_price;
 	private Double promotion_price;
@@ -21,17 +26,15 @@ public class Product {
 	private Integer is_discount;
 	private Integer isMemberDiscount;
 	private Integer isMemberIntegral;
-	//YSQ-LBCY:20180308+
 	private Integer isUseMemberPrice;
 	private Double memberPrice;
-	
 	private String description;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -43,11 +46,11 @@ public class Product {
 		this.shop_id = shop_id;
 	}
 
-	public Integer getCategory_id() {
+	public Long getCategory_id() {
 		return category_id;
 	}
 
-	public void setCategory_id(Integer category_id) {
+	public void setCategory_id(Long category_id) {
 		this.category_id = category_id;
 	}
 
@@ -59,11 +62,11 @@ public class Product {
 		this.category_name = category_name;
 	}
 
-	public Integer getLogo_id() {
+	public Long getLogo_id() {
 		return logo_id;
 	}
 
-	public void setLogo_id(Integer logo_id) {
+	public void setLogo_id(Long logo_id) {
 		this.logo_id = logo_id;
 	}
 

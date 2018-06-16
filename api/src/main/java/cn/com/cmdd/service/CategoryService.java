@@ -22,12 +22,12 @@ public class CategoryService {
 	@Autowired
 	private CategoryDao categoryDao;
 	
-	public Integer saveCategory(Category category){
+	public void saveCategory(Category category){
 		categoryDao.saveCategory(category);
-		return category.getId();
+		
 	}
 	
-	public void deleteCategory(Integer id){
+	public void deleteCategory(Long id){
 		categoryDao.deleteCategory(id);
 		
 	}
@@ -36,7 +36,7 @@ public class CategoryService {
 		categoryDao.updateCategory(category);
 	}
 	
-	public List<Category> getCategory(Integer shop_id, Integer id){
+	public List<Category> getCategory(Integer shop_id, Long id){
 		return categoryDao.getCategory(shop_id,id);
 	}
 }

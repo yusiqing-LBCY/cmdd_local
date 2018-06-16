@@ -3,12 +3,14 @@ package cn.com.cmdd.domain;
 
 
 import java.util.ArrayList;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class UnifyOrder {
     private Integer shopId;
-    private Integer diningTablePid;
-    private ArrayList<Integer> diningTableIdList;
+    @JsonFormat(shape=JsonFormat.Shape.STRING)
+    private Long diningTablePid;
+    private ArrayList<Long> diningTableIdList;
 
     public Integer getShopId() {
         return shopId;
@@ -18,19 +20,19 @@ public class UnifyOrder {
         this.shopId = shopId;
     }
 
-    public Integer getDiningTablePid() {
+    public Long getDiningTablePid() {
         return diningTablePid;
     }
 
-    public void setDiningTablePid(Integer diningTablePid) {
+    public void setDiningTablePid(Long diningTablePid) {
         this.diningTablePid = diningTablePid;
     }
 
-    public ArrayList<Integer> getDiningTableIdList() {
+    public ArrayList<Long> getDiningTableIdList() {
         return diningTableIdList;
     }
 
-    public void setDiningTableIdList(ArrayList<Integer> diningTableIdList) {
+    public void setDiningTableIdList(ArrayList<Long> diningTableIdList) {
         this.diningTableIdList = diningTableIdList;
     }
 }

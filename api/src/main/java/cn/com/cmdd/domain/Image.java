@@ -2,16 +2,20 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("Image")
 
 public class Image {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private String origin_name;
 	private Long file_size;
-	public Integer getId() {
+	
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getOrigin_name() {

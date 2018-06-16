@@ -11,7 +11,7 @@ public interface PrintJobDao {
 	void savePrintJobList(@Param("printJobList") List<PrintJob> printJobList);
 	void savePrintJob(PrintJob printJob);
 	List<PrintJob> getPrintJobList(@Param("shop_id") Integer shop_id);
-	void removePrintJobById(@Param("id") Integer id);
+	void removePrintJobById(@Param("id")Long id);
 }
 
 

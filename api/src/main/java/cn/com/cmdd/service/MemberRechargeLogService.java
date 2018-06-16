@@ -22,15 +22,15 @@ public class MemberRechargeLogService {
 	private MemberRechargeLogDao memberRechargeLogDao;
 
 	@Transactional
-	public Integer addMemberRechargeLog(MemberRechargeLog memberRechargeLog){
+	public void addMemberRechargeLog(MemberRechargeLog memberRechargeLog){
 		
 		memberRechargeLogDao.addMemberRechargeLog(memberRechargeLog);
-		return memberRechargeLog.getId();
+		
 	}	
 	
 	
 	@Transactional
-	public List<MemberRechargeLog> getMemberRechargeLogListByMember(int member_id){
+	public List<MemberRechargeLog> getMemberRechargeLogListByMember(Long member_id){
 		
 		return memberRechargeLogDao.getMemberRechargeLogListByMember(member_id,null,null);
 	}

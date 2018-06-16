@@ -8,10 +8,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Alias("OrderItem")
 public class OrderItem {
-	private Integer id;
-	private Integer order_id;
-	private Integer product_id;
-	private Integer category_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long order_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long product_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long category_id;
 	private Integer status_pay;
 	private String category_name;
 	private Double quantity;
@@ -53,35 +57,35 @@ public class OrderItem {
 		this.sumField = sumField;
 	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Integer getOrder_id() {
+	public Long getOrder_id() {
 		return order_id;
 	}
 
-	public void setOrder_id(Integer order_id) {
+	public void setOrder_id(Long order_id) {
 		this.order_id = order_id;
 	}
 
-	public Integer getProduct_id() {
+	public Long getProduct_id() {
 		return product_id;
 	}
 
-	public void setProduct_id(Integer product_id) {
+	public void setProduct_id(Long product_id) {
 		this.product_id = product_id;
 	}
 
-	public Integer getCategory_id() {
+	public Long getCategory_id() {
 		return category_id;
 	}
 
-	public void setCategory_id(Integer category_id) {
+	public void setCategory_id(Long category_id) {
 		this.category_id = category_id;
 	}
 

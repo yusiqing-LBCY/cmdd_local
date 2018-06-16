@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Alias("Staff")
 public class Staff {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private Integer shop_id;
 	private String 	account;
 	private String 	name;
@@ -41,10 +42,10 @@ public class Staff {
 	public void setLast_login_time(Date last_login_time) {
 		this.last_login_time = last_login_time;
 	}
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

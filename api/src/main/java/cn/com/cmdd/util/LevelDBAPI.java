@@ -15,7 +15,7 @@ import org.apache.http.util.EntityUtils;
 public final class LevelDBAPI
 {
 	public static String url = "http://127.0.0.1:6789";
-    public static byte[] get(Integer id){
+    public static byte[] get(Long id){
     	String path = url+"/get?id="+id.toString();
     	@SuppressWarnings("resource")
 		HttpClient httpClient = new DefaultHttpClient();  
@@ -35,12 +35,12 @@ public final class LevelDBAPI
         return returnBytes;  
     }
     
-    public static Integer delete(Integer id){
+    public static Long delete(Long id){
     	String path = url+"/delete?id="+id.toString();
     	@SuppressWarnings("resource")
 		HttpClient httpClient = new DefaultHttpClient();  
         HttpDelete methodDelete = new HttpDelete(path);  
-        int retId = 0;
+        Long retId = 0l;
         try {  
             HttpResponse response = httpClient.execute(methodDelete);  
             if (response.getStatusLine().getStatusCode() == 200) {  
@@ -55,12 +55,12 @@ public final class LevelDBAPI
 		return retId;
     }
     
-    public static Integer post(Integer id, byte[] data){
+    public static Long post(Long id, byte[] data){
     	String path = url+"/put?id="+id.toString();
     	@SuppressWarnings("resource")
 		HttpClient httpClient = new DefaultHttpClient();  
         HttpPost methodPost = new HttpPost(path);  
-        int retId = 0;
+        Long retId = 0L;
         methodPost.setEntity((HttpEntity) new ByteArrayEntity(data)); 
         try {  
         	

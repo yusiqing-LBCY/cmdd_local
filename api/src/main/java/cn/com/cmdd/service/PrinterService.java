@@ -26,12 +26,12 @@ public class PrinterService {
 	@Autowired
 	private CategoryDao categoryDao;
 	
-	public Integer savePrinter(Printer printer){
+	public void savePrinter(Printer printer){
 		printerDao.savePrinter(printer);
-		return printer.getId();
+	
 	}
 	
-	public void deletePrinter(Integer id){
+	public void deletePrinter(Long id){
 		printerDao.deletePrinter(id);
 		
 	}
@@ -46,7 +46,7 @@ public class PrinterService {
 		if(printers!=null){
 			for (Printer printer : printers) {
 				if(printer.getCategory_name() == null){
-					List<Category> categorys = categoryDao.getCategory(null,printer.getPrinter_type());
+					List<Category> categorys = categoryDao.getCategory(null,printer.getPrinter_type().longValue());
 					Category category = categorys.size()==0?null:categorys.get(0);
 					printer.setCategory_name(category.getName());
 				}
@@ -56,7 +56,7 @@ public class PrinterService {
 		return printers;
 	}
 	
-	public Printer getPrinterById(Integer id){
+	public Printer getPrinterById(Long id){
 		List<Printer> printers = printerDao.getPrinter(null,id);
 		Printer printer = printers.size()==0?null:printers.get(0);
 		if(printer.getCategory_name() == null){
@@ -67,7 +67,7 @@ public class PrinterService {
 		return printer;						
 	}
 	
-	public Printer getPrinterByPrinter_type(Integer shop_id,Integer printer_type){
+	public Printer getPrinterByPrinter_type(Integer shop_id,Long printer_type){
 		return printerDao.getPrinterNameByPrinter_type(shop_id,printer_type);
 	}
 }

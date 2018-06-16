@@ -2,20 +2,15 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
-/**
- * @typeName dining_table
- * @description
- * 		Summary : TODO 
-		Member Property :TODO
-		Member Method:TODO
- * @author yusiqing
- * @date 2017年6月12日 上午10:04:32
- */
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("Dining_table")
 public class Dining_table {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private Integer shop_id;
-	private Integer logo_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long logo_id;
 	private String serial_id;
 	private String name;
 	private String address;
@@ -24,33 +19,12 @@ public class Dining_table {
 	private Integer status;
 	private Integer is_enable;
 	private String description;
-	
-	public Dining_table() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
-	public Dining_table(Integer id, Integer shop_id, Integer logo_id, String serial_id, String name, String address,
-			String seating_number, Integer is_out, Integer status, Integer is_enable, String description) {
-		super();
-		this.id = id;
-		this.shop_id = shop_id;
-		this.logo_id = logo_id;
-		this.serial_id = serial_id;
-		this.name = name;
-		this.address = address;
-		this.seating_number = seating_number;
-		this.is_out = is_out;
-		this.status = status;
-		this.is_enable = is_enable;
-		this.description = description;
-	}
-
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -62,11 +36,11 @@ public class Dining_table {
 		this.shop_id = shop_id;
 	}
 
-	public Integer getLogo_id() {
+	public Long getLogo_id() {
 		return logo_id;
 	}
 
-	public void setLogo_id(Integer logo_id) {
+	public void setLogo_id(Long logo_id) {
 		this.logo_id = logo_id;
 	}
 

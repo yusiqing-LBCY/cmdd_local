@@ -21,7 +21,7 @@ public class MemberService {
 	private MemberDao memberDao;
 	
 	@Transactional
-	public Integer addMember(Member member) throws Exception{
+	public Long addMember(Member member) throws Exception{
 		
 		List<Member> memberList = memberDao.getMemberListByShop_id(member.getShop_id());
 		for(Member ph : memberList){
@@ -40,14 +40,14 @@ public class MemberService {
 
 	
 	@Transactional
-	public void deleteMember(int id){
+	public void deleteMember(Long id){
 		
 		 memberDao.deleteMember(id);
 	}
 	
 	
 	@Transactional
-	public Member getMember(int id){
+	public Member getMember(Long id){
 		
 		return memberDao.getMemberById(id);
 	}
@@ -66,7 +66,7 @@ public class MemberService {
 	}
 	
 	@Transactional
-	public Integer updateMemberPassword(int id,String newPwd) throws Exception{
+	public Long updateMemberPassword(Long id,String newPwd) throws Exception{
 		String pwdencry = Md5Helper.MD5Encode(newPwd);
 		memberDao.updateMemberPassword(id, pwdencry);
 		return id;

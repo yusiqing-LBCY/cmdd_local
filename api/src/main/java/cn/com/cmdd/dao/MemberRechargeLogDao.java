@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import cn.com.cmdd.domain.MemberRechargeLog;
+import cn.com.cmdd.domain.OrderItem;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface MemberRechargeLogDao {
 	
 	 void updateMemberRechargeLog(MemberRechargeLog memberRechargeLog);
 	
-	 List<MemberRechargeLog> getMemberRechargeLogListByMember(@Param("member_id") int member_id,
+	 List<MemberRechargeLog> getMemberRechargeLogListByMember(@Param("member_id")Long member_id,
 															  @Param("category")Integer category,
 															  @Param("type")Integer type);
 	
@@ -39,5 +40,7 @@ public interface MemberRechargeLogDao {
             @Param("start_time") Date start_time,
             @Param("end_time") Date end_time
     );
-	
+	//同步数据
+		List<MemberRechargeLog> selectByIsUpload();
+		int updateIsUpload(Long id);
 }

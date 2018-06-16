@@ -4,9 +4,9 @@
 <mapper namespace="cn.com.cmdd.dao.LotteryDao">
 
 	
-	<insert id="addLottery" parameterType="Lottery" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO lottery(levels,quantity,shop_id,prize) 
-		VALUES (#{levels},#{quantity},#{shop_id},#{prize})
+	<insert id="addLottery" parameterType="Lottery">
+		INSERT INTO lottery(id,levels,quantity,shop_id,prize) 
+		VALUES (UUID_SHORT(),#{levels},#{quantity},#{shop_id},#{prize})
 	</insert>
 	
 	

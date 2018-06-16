@@ -27,26 +27,26 @@ public class KitchenService {
 	private ImageDao imageDao;
 	
 	@Transactional
-	public Integer addKitchen(Kitchen kitchen){
+	public void addKitchen(Kitchen kitchen){
 		
 		kitchenDao.addKitchen(kitchen);
-		return kitchen.getId();
+	
 	}	
 	
 	
 	@Transactional
-	public void deleteKitchen(int id){
+	public void deleteKitchen(Long id){
 		
 		Kitchen kitchen = kitchenDao.getKitchenById(id);
 		imageService.DeleteImage(kitchen.getLogo_id());
-		imageDao.deleteImage(kitchen.getLogo_id());
+		imageDao.delete(kitchen.getLogo_id());
 		
 		 kitchenDao.deleteKitchen(id);
 	}
 	
 	
 	@Transactional
-	public Kitchen getKitchen(int id){
+	public Kitchen getKitchen(Long id){
 		
 		return kitchenDao.getKitchenById(id);
 	}

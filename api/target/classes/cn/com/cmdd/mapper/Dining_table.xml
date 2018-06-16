@@ -2,10 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.cmdd.dao.Dining_tableDao">
-	<insert id="saveDining_table" parameterType="Dining_table" useGeneratedKeys="true" keyProperty="id">
-		INSERT 
+	<insert id="insert" parameterType="Dining_table">
+		<selectKey resultType="Long" order="BEFORE" keyProperty="id">
+				SELECT COALESCE(#{id},UUID_SHORT()) AS id
+		</selectKey>
+		INSERT
 		INTO 
-			dining_table 
+			dining_table(id,shop_id,logo_id,serial_id,name,address,seating_number,is_out,status,is_enable,description) 
 		VALUES(
 			#{id},#{shop_id},#{logo_id},#{serial_id},#{name},#{address},#{seating_number},#{is_out},#{status},#{is_enable},#{description}
 		)
@@ -63,15 +66,14 @@
 		ORDER BY id ASC
 	</select>
 	
+	
 	<select id="select" resultType="Dining_table">
 		SELECT 
 			id,shop_id,logo_id,serial_id,name,address,seating_number,is_out,status,is_enable,description
 		FROM 
 			dining_table
 		WHERE
-			id=#{id} AND is_enable = 1	
-		ORDER BY 
-			id DESC
+			id=#{id}
 	</select>
 	
 	<select id="selectLists" resultType="Dining_table">

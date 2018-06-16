@@ -6,13 +6,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Alias("MemberRechargeLog")
 public class MemberRechargeLog {
-	private Integer id;
-	private Integer member_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long member_id;
 	private Integer shop_id;
 	private Double  amount;
 	private Integer pay_type;
 	private Date	create_time;	
-	private Double balance;
+		private Double balance;
 	private String name;
 	private Integer sex;
 	private String phone;
@@ -61,10 +63,10 @@ public class MemberRechargeLog {
 	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
 	}
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Integer getShop_id() {
@@ -73,10 +75,10 @@ public class MemberRechargeLog {
 	public void setShop_id(Integer shop_id) {
 		this.shop_id = shop_id;
 	}
-	public Integer getMember_id() {
+	public Long getMember_id() {
 		return member_id;
 	}
-	public void setMember_id(Integer member_id) {
+	public void setMember_id(Long member_id) {
 		this.member_id = member_id;
 	}
 	public Double getAmount() {

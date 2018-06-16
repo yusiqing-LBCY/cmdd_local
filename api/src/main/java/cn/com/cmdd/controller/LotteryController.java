@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import cn.com.cmdd.dao.LotteryDao;
 import cn.com.cmdd.domain.Lottery;
 import cn.com.cmdd.service.LotteryService;
 import cn.com.cmdd.util.ResponseObject;
@@ -24,23 +25,73 @@ public class LotteryController {
 
 	@Autowired
 	private LotteryService lotteryService;
-
+	
+	@Autowired
+	private LotteryDao lotteryDao;
+	
+	
+	
+	@RequestMapping(value="/lottery/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request
+			,HttpServletResponse response)
+	{
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=lotteryDao.selectByIsUpload();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/lottery/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			lotteryDao.updateIsUpload(id);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
 	@RequestMapping(value="/lottery",method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseObject addLottery(HttpServletRequest request,
 									 HttpServletResponse response,
-									 @RequestBody Lottery lottery){
+									 @RequestBody Lottery lottery)
+	{
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.AGENT)){
 			return null;
 		}*/
 		
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try{
-			Integer id = lotteryService.addLottery(lottery);
+			lotteryService.addLottery(lottery);
 			
-			Map<String,Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("lottery_id", id);
-			responseObject.msg = resultMap;
 		}catch(Exception e){
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -54,10 +105,10 @@ public class LotteryController {
 	
 	@RequestMapping(value="/shop/{id}/lottery/list",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getLotterys(@PathVariable("id")int lottery_id){
+	public ResponseObject getLotterys(@PathVariable("id")Integer shopId){
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		try {
-			responseObject.msg = lotteryService.getLotteryListByShop_id(lottery_id);
+			lotteryService.getLotteryListByShop_id(shopId);
 		} catch (Exception e) {
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -68,7 +119,9 @@ public class LotteryController {
 	
 	@RequestMapping(value="/lottery/{id}",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getLottery(HttpServletRequest request, HttpServletResponse response,@PathVariable("id")int id){
+	public ResponseObject getLottery(HttpServletRequest request, 
+			HttpServletResponse response,
+			@PathVariable("id")Long id){
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.AGENT)){
 			return null;
 		}*/
@@ -87,7 +140,11 @@ public class LotteryController {
 	
 	@RequestMapping(value="/lottery/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject updateLottery(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id, @RequestBody Lottery lottery){
+	public ResponseObject updateLottery(HttpServletRequest request, 
+			HttpServletResponse response,
+			@PathVariable("id")Long id, 
+			@RequestBody Lottery lottery)
+	{
 		/*if(!AuthCheck.UserCheck(request, response,KEYS.AGENT)){
 			return null;
 		}*/

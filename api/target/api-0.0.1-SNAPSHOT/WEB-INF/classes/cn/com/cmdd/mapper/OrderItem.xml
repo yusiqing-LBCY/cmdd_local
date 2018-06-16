@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.cmdd.dao.OrderItemDao">	
-	<insert id="insert" parameterType="OrderItem" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="OrderItem">
 		INSERT INTO 
 			order_product_log(
+				id,
 				order_id,
 				product_id,
 				category_id,
@@ -20,6 +21,7 @@
 				description
 				)
 		VALUES(
+				UUID_SHORT(),
 			   #{order_id},
 		 	   #{product_id},		 	   
 		 	   #{category_id},
@@ -36,7 +38,7 @@
 		 	   )
 	</insert>
 	
-	<delete id="delete" parameterType="Integer">
+	<delete id="delete" parameterType="Long">
 		DELETE 
 		FROM 
 			order_product_log
@@ -44,7 +46,7 @@
 			id=#{id}
 	</delete>
 	
-	<delete id="deleteByOrderId" parameterType="Integer">
+	<delete id="deleteByOrderId" parameterType="Long">
 		DELETE
 		FROM 
 			order_product_log
@@ -264,5 +266,36 @@
 			</if>
 		</trim>				
 	</select>
+	
+	<select id="selectByIsUpload" resultType="OrderItem">
+		SELECT 
+			id,
+			order_id,
+			product_id,
+			category_id,
+			shop_id shopId,
+			quantity,
+			status_id,
+			description,
+			create_time,
+			pay_time,
+			back_time,
+			is_lottery,
+			status_pay,
+			money_preferential_discount moneyPreferentialDiscount
+		FROM 
+			order_product_log
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			order_product_log
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
+	</update>
 	
 </mapper>

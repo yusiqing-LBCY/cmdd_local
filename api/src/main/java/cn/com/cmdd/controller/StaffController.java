@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.com.cmdd.constant.KEYS;
+import cn.com.cmdd.dao.StaffDao;
 import cn.com.cmdd.domain.Password;
 import cn.com.cmdd.domain.Staff;
 import cn.com.cmdd.service.StaffService;
@@ -28,23 +29,25 @@ public class StaffController {
 
 	@Autowired
 	private StaffService staffService;
+	
+	@Autowired
+	private StaffDao staffDao;
 
 	@RequestMapping(value="/staff",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseObject addStaff(HttpServletRequest request,
-								   HttpServletResponse response,
-								   @RequestBody Staff staff){
+	public ResponseObject addStaff(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Staff staff)
+	{
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
 		}*/
 		
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try{
-			Integer id = staffService.addStaff(staff);
+			staffService.addStaff(staff);
 			
-			Map<String,Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("staff_id", id);
-			responseObject.msg = resultMap;
 		}catch(Exception e){
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -56,7 +59,10 @@ public class StaffController {
 	
 	@RequestMapping(value="/staff/{id}",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getStaff(HttpServletRequest request, HttpServletResponse response,@PathVariable("id")int id){
+	public ResponseObject getStaff(
+			HttpServletRequest request, 
+			HttpServletResponse response,
+			@PathVariable("id")Long id){
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.STAFF)){
 			return null;
 		}*/
@@ -90,10 +96,10 @@ public class StaffController {
 	
 	@RequestMapping(value="/staff/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject updateStaff(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id, @RequestBody Staff staff){
-		if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+	public ResponseObject updateStaff(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id, @RequestBody Staff staff){
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
-		}
+		}*/
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		try {
 			staff.setId(id);
@@ -112,10 +118,14 @@ public class StaffController {
 	
 	@RequestMapping(value="/staff/{id}",method=RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseObject deleteStaff(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") int id){
-		if(!AuthCheck.UserCheck(request, response,KEYS.SHOP)){
+	public ResponseObject deleteStaff(
+			HttpServletRequest request, 
+			HttpServletResponse response, 
+			@PathVariable("id")Long id)
+	{
+		/*if(!AuthCheck.UserCheck(request, response,KEYS.SHOP)){
 			return null;
-		}
+		}*/
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 		try {
 			staffService.deleteStaff(id);
@@ -133,16 +143,15 @@ public class StaffController {
 	public ResponseObject updateStaffPassword(HttpServletRequest request,
 											  HttpServletResponse response,
 											  @RequestBody Password passwordFrom,
-											  @PathVariable("id")int id){
-		if(!AuthCheck.UserCheck(request, response,KEYS.SHOP)){
+											  @PathVariable("id")Long id){
+		/*if(!AuthCheck.UserCheck(request, response,KEYS.SHOP)){
 			return null;
-		}
+		}*/
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
-		Map<String,Object> map = new HashMap<String,Object>();
+		
 		try{
-			int sid = staffService.updateStaffPassword(id,passwordFrom.getOld_password(),passwordFrom.getNew_password());
-			map.put("user_id", sid);
-			responseObject.msg = map;
+			staffService.updateStaffPassword(id,passwordFrom.getOld_password(),passwordFrom.getNew_password());
+			
 		}catch (Exception e) {
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -166,6 +175,50 @@ public class StaffController {
 		}catch (Exception e) {
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/staff/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(HttpServletRequest request,HttpServletResponse response){
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=staffDao.selectByIsUpload();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/staff/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			staffDao.updateIsUpload(id);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
 		}
 		return responseObject;
 	}

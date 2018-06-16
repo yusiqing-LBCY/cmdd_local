@@ -44,6 +44,7 @@
 	<insert id="addMember" parameterType="Member" useGeneratedKeys="true" keyProperty="id">
 		INSERT
 		INTO member(
+			id,
 			shop_id,
 			member_card_id,
 			phone,
@@ -54,7 +55,9 @@
 			integral,
 			is_in_use,
 			pay_password)
-		VALUES(#{shop_id},
+		VALUES(
+			  UUID_SHORT(),
+			  #{shop_id},
 			  #{memberCardId},
 			  #{phone},
 			  #{name},
@@ -96,6 +99,35 @@
 		FROM member
 		WHERE id = #{id}
 	</delete>
+	
+	<!-- 同步数据  -->
+	<select id="selectByIsUpload" resultType="Member">
+		SELECT 
+			id,
+			shop_id,
+			member_card_id memberCardId,
+			phone,
+			name,
+			sex,
+			birthday,
+			is_in_use,
+			pay_password,
+			balance,
+			integral		
+		FROM 
+			Member
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			Member
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
+	</update>
 
 </mapper>
 

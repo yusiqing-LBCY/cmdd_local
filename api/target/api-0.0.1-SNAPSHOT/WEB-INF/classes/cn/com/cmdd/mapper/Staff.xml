@@ -30,13 +30,16 @@
 	<select id="getStaffList" resultType="Staff">
 		SELECT * FROM staff ORDER BY id
 	</select>
-	
-	
-	<insert id="addStaff" parameterType="Staff" useGeneratedKeys="true" keyProperty="id">
-		INSERT into staff(shop_id,account,name,sex,phone,password,is_in_use,create_time,last_login_time) 
-		VALUES (#{shop_id},#{account},#{name},#{sex},#{phone},#{password},#{is_in_use},now(),now())
+	<!-- <selectKey resultType="Long" order="BEFORE" keyProperty="id">
+				SELECT COALESCE(#{id},UUID_SHORT()) AS id
+			</selectKey> -->	
+	<insert id="addStaff" parameterType="Staff">	
+			<selectKey resultType="Long" order="BEFORE" keyProperty="id">
+				SELECT COALESCE(#{id},UUID_SHORT()) AS id
+			</selectKey>
+			INSERT INTO staff(id,shop_id,account,name,sex,phone,password,is_in_use,create_time,last_login_time) 
+			VALUES(#{id},#{shop_id},#{account},#{name},#{sex},#{phone},#{password},#{is_in_use},now(),now())
 	</insert>
-	
 	
 	<select id="getStaffById" resultType="Staff">
 		SELECT  s.id, 
@@ -96,6 +99,34 @@
 		UPDATE shop 
 		SET password = #{1}
 		WHERE id = #{0}
+	</update>
+	
+	<!-- synchronous data  -->
+	<select id="selectByIsUpload" resultType="staff">
+		SELECT 
+			id,
+			shop_id,
+			account,
+			name,
+			sex,
+			phone,
+			password,
+			is_in_use,
+			create_time,
+			last_login_time
+		FROM 
+			staff
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			staff
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
 	</update>
 	
 </mapper>

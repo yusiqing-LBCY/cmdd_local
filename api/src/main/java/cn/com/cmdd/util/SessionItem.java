@@ -5,11 +5,11 @@ import java.util.Date;
 
 
 public class SessionItem {
-	private int id;
+	private Long id;
 	private String keys;
 	private Date valid_time;
 	
-	public SessionItem(int id, String keys){
+	public SessionItem(Long id, String keys){
 		this.id = id;
 		this.keys = keys;
 		
@@ -18,10 +18,10 @@ public class SessionItem {
 		setValid_time(date);
 	}
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

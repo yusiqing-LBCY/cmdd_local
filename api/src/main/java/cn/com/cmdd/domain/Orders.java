@@ -1,23 +1,18 @@
 package cn.com.cmdd.domain;
-
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
-
-/*
- * @JsonFormat(pattern="yyyy-MM-dd)
- * @JsonIgnore(value=true)
- */
 import com.fasterxml.jackson.annotation.JsonFormat;
 @Alias("Orders")
 public class Orders {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private String order_no;
 	private Integer shop_id;
 	private String serial_id;
-	private Integer dining_table_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long dining_table_id;
 	private String table_runner;
 	private Double discount;
 	private Double residue;
@@ -40,7 +35,7 @@ public class Orders {
 	private List<OrderItem> loi;
 	private Double service_charge;
 	//17/11/3+
-	private Integer memberId;
+	private Long memberId;
 	private String memberIdentifier;
 	private String memberCardName;
 	private Double memberCardDiscount;
@@ -76,10 +71,10 @@ public class Orders {
 	public void setService_charge(Double service_charge) {
 		this.service_charge = service_charge;
 	}
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getOrder_no() {
@@ -100,10 +95,10 @@ public class Orders {
 	public void setSerial_id(String serial_id) {
 		this.serial_id = serial_id;
 	}
-	public Integer getDining_table_id() {
+	public Long getDining_table_id() {
 		return dining_table_id;
 	}
-	public void setDining_table_id(Integer dining_table_id) {
+	public void setDining_table_id(Long dining_table_id) {
 		this.dining_table_id = dining_table_id;
 	}
 	public String getTable_runner() {
@@ -324,10 +319,10 @@ public class Orders {
 	public void setTypeHypotaxis(Integer typeHypotaxis) {
 		this.typeHypotaxis = typeHypotaxis;
 	}
-	public Integer getMemberId() {
+	public Long getMemberId() {
 		return memberId;
 	}
-	public void setMemberId(Integer memberId) {
+	public void setMemberId(Long memberId) {
 		this.memberId = memberId;
 	}
 	public Integer getIsUseMember() {

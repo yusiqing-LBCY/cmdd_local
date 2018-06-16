@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import cn.com.cmdd.dao.PrinterDao;
 import cn.com.cmdd.domain.Printer;
 import cn.com.cmdd.service.PrinterService;
 import cn.com.cmdd.util.ResponseObject;
@@ -35,6 +36,9 @@ public class PrinterController {
 	
 	@Autowired
 	private PrinterService printerService;
+	
+	@Autowired
+	private PrinterDao printerDao;
 		
 	@RequestMapping(value="/printer",method=RequestMethod.POST)
 	@ResponseBody
@@ -62,10 +66,8 @@ public class PrinterController {
 		}
 		
 		try {
-			Integer id = printerService.savePrinter(printer);
-			HashMap<String,Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("printer_id", id);
-			responseObject.msg=resultMap;
+			printerService.savePrinter(printer);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			responseObject.code=ResponseObject.serverError;
@@ -106,7 +108,7 @@ public class PrinterController {
 	public ResponseObject updatePrinter(
 											HttpServletRequest request,
 											HttpServletResponse response,
-											@PathVariable("id")Integer id,
+											@PathVariable("id")Long id,
 											@RequestBody Printer Printer
 											
 											){
@@ -136,11 +138,10 @@ public class PrinterController {
 	@RequestMapping(value="/printer/{id}",method=RequestMethod.GET)
 	@ResponseBody
 	public ResponseObject getPrinterById(
-											HttpServletRequest request,
-											HttpServletResponse response,
-											@PathVariable("id")Integer id
-											
-										){
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 											
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -163,7 +164,7 @@ public class PrinterController {
 	public ResponseObject deletePrinter(
 											HttpServletRequest request,
 											HttpServletResponse response,
-											@PathVariable("id")Integer id
+											@PathVariable("id")Long id
 											
 											){
 		
@@ -191,7 +192,7 @@ public class PrinterController {
 	public ResponseObject getPrinterByPrinter_type(
 											HttpServletRequest request,
 											HttpServletResponse response,
-											@PathVariable("printer_type")Integer printer_type,
+											@PathVariable("printer_type")Long printer_type,
 											@PathVariable("shop_id") Integer shop_id
 										){
 											
@@ -200,7 +201,7 @@ public class PrinterController {
 		}*/																						
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		try {					
-			responseObject.msg = printerService.getPrinterByPrinter_type(shop_id,printer_type);
+			responseObject.msg=printerService.getPrinterByPrinter_type(shop_id,printer_type);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			responseObject.code=ResponseObject.serverError;
@@ -209,4 +210,46 @@ public class PrinterController {
 		}
 		return responseObject;
 	} 
+	
+	@RequestMapping(value="/printer/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(HttpServletRequest request,HttpServletResponse response){
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=printerDao.selectByIsUpload();
+		
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/printer/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Long id){
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			printerDao.updateIsUpload(id);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
 }

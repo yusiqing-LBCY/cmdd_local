@@ -26,7 +26,7 @@ public class UserService {
 	private PlatformDao platformDao;
 	
 	@Transactional
-	public Integer addUser(User user){
+	public Long addUser(User user){
 		
 		
 		userDao.addUser(user);
@@ -49,7 +49,7 @@ public class UserService {
 		if(user != null){
 			
 			String pwdencry = Md5Helper.MD5Encode(password);
-			Integer id = user.getUser_id();
+			Long id = user.getUser_id();
 			String user_keys = user.getUser_key();
 			
 			if(user.getUser_key().equals("1")){

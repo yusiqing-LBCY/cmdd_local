@@ -43,10 +43,10 @@ public class CategoryController {
 	@RequestMapping(value="/category",method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseObject saveCategory(
-										HttpServletRequest request,
-										HttpServletResponse response,
-										@RequestBody Category category
-																			){
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestBody Category category)
+	{
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -55,10 +55,8 @@ public class CategoryController {
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
 		try {
-			Integer id = categoryService.saveCategory(category);
-			HashMap<String,Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("Category_id", id);
-			responseObject.msg=resultMap;
+			categoryService.saveCategory(category);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			responseObject.code=ResponseObject.serverError;
@@ -70,7 +68,11 @@ public class CategoryController {
 	
 	@RequestMapping(value="/shop/{id}/category/list",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getCategory(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer shop_id){
+	public ResponseObject getCategory(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Integer shop_id)
+	{
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
 		try {
@@ -86,7 +88,12 @@ public class CategoryController {
 	
 	@RequestMapping(value="/category/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject updateCategory(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id,@RequestBody Category category){
+	public ResponseObject updateCategory(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id,
+			@RequestBody Category category)
+	{
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -110,12 +117,15 @@ public class CategoryController {
 	
 	@RequestMapping(value="/category/{id}",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getCategoryById(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id){
+	public ResponseObject getCategoryById(HttpServletRequest request,
+										HttpServletResponse response,
+										@PathVariable("id")Long id)
+	{
 				
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
 		try {					
-			responseObject.msg = categoryService.getCategory(null, id).get(0);		
+			responseObject.msg = categoryDao.select(id);		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			responseObject.code=ResponseObject.serverError;
@@ -127,7 +137,11 @@ public class CategoryController {
 	
 	@RequestMapping(value="/category/{id}",method=RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseObject deleteCategory(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id){
+	public ResponseObject deleteCategory(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -152,12 +166,15 @@ public class CategoryController {
 	
 	@RequestMapping(value="/category/isUpload",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject isUpload(HttpServletRequest request,HttpServletResponse response){
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response)
+	{
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
 		try {
 			
-			responseObject.msg=categoryDao.getCategoselectByIsUpload();
+			responseObject.msg=categoryDao.selectByIsUpload();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -170,7 +187,10 @@ public class CategoryController {
 	
 	@RequestMapping(value="/category/isUpload/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject isUpload(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id){
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id){
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -188,7 +208,6 @@ public class CategoryController {
 			e.printStackTrace();
 		}
 		return responseObject;
-	}
+	}}
 	
 	
-}

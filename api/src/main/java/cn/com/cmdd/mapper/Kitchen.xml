@@ -5,8 +5,11 @@
 
 	
 	<insert id="addKitchen" parameterType="Kitchen" useGeneratedKeys="true" keyProperty="id">
-		INSERT into kitchen(shop_id,logo_id,description,title) 
-		VALUES (#{shop_id},#{logo_id},#{description},#{title})
+		INSERT 
+		INTO
+			 kitchen(id,shop_id,logo_id,description,title) 
+		VALUES(
+			UUID_SHORT(),#{shop_id},#{logo_id},#{description},#{title})
 	</insert>
 	
 	<delete id="deleteKitchen">

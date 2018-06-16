@@ -26,7 +26,7 @@ public interface ShopDao {
 	
 	void updateShopPassword(int id, String newPwd);
 	
-	void updateStaffPassword(int id, String newPwd);
+	void updateStaffPassword(Long id, String newPwd);
 	
 	List<Banner> getBannerListByAgentId(int agent_id);
 	

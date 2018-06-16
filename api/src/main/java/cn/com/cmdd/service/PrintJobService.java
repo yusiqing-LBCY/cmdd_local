@@ -53,7 +53,7 @@ public class PrintJobService {
 		return printJobList;						
 	}
 	
-	public void removePrintJob(Integer id) {
+	public void removePrintJob(Long id) {
 		printJobDao.removePrintJobById(id);
 	}
 }

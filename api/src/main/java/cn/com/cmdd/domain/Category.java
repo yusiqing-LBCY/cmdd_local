@@ -2,27 +2,20 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("category")
 public class Category {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private Integer shop_id;
 	private String name;
 	private Integer is_enable;
-	public Category() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Category(Integer id, Integer shop_id, String name, Integer is_enable) {
-		super();
-		this.id = id;
-		this.shop_id = shop_id;
-		this.name = name;
-		this.is_enable = is_enable;
-	}
-	public Integer getId() {
+	private Integer sort;
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Integer getShop_id() {
@@ -43,9 +36,12 @@ public class Category {
 	public void setIs_enable(Integer is_enable) {
 		this.is_enable = is_enable;
 	}
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", shop_id=" + shop_id + ", name=" + name + ", is_enable=" + is_enable + "]";
+	public Integer getSort() {
+		return sort;
 	}
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+	
 	
 }

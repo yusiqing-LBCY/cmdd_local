@@ -32,14 +32,12 @@ public class ProductService {
 	@Autowired
 	private ProductDao productDao;
 
-	public Integer saveProduct(Product product){
+	public void saveProduct(Product product){
 
-		productDao.insert(product);
-
-		return product.getId();
+		 productDao.insert(product);	 
 	}
 	
-	public void deleteProduct(Integer id){
+	public void deleteProduct(Long id){
 		productDao.delete(id);
 	}
 	
@@ -47,7 +45,7 @@ public class ProductService {
 		productDao.update(product);
 	}
 	
-	public List<Product> getProduct(Integer shop_id, Integer id, Integer category_id){
+	public List<Product> getProduct(Integer shop_id, Long id, Long category_id){
 
 		return productDao.selectListByShopIdAndIdAndCategoryId(shop_id, id, category_id);
 	}

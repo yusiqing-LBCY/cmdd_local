@@ -5,7 +5,6 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,31 +14,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.com.cmdd.dao.Dining_tableDao;
 import cn.com.cmdd.domain.Dining_table;
 import cn.com.cmdd.service.Dining_tableService;
 import cn.com.cmdd.util.ResponseObject;
 
-/**
- * 
- * @typeName Dining_tableController
- * @description 
-		Summary : TODO 
-		Member Property :TODO
-		Member Method:TODO
- * @author yusiqing
- * @date 2017年6月12日 下午5:22:13
- */
-@Controller//@CrossOrigin(origins = "*")
+@Controller
 public class Dining_tableController {
 	
 	private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Dining_tableController.class);
 	
 	@Autowired
 	private Dining_tableService dts;
+	
+	@Autowired
+	private Dining_tableDao diningTableDao;
 		
 	@RequestMapping(value="/dining-table",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseObject saveDining_table(HttpServletRequest request, HttpServletResponse response, @RequestBody Dining_table dt){
+	public ResponseObject saveDining_table(
+			HttpServletRequest request, 
+			HttpServletResponse response, 
+			@RequestBody Dining_table dt)
+	{
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -48,7 +45,7 @@ public class Dining_tableController {
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 						
 		try {
-			Integer id = dts.saveDining_table(dt);
+			Long id = dts.saveDining_table(dt);
 			HashMap<String,Object> resultMap = new HashMap<String,Object>();
 			resultMap.put("dining_table_id", id);
 			responseObject.msg=resultMap;
@@ -63,7 +60,10 @@ public class Dining_tableController {
 	
 	@RequestMapping(value="/shop/{id}/dining-table/list",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getDining_table(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer shop_id){
+	public ResponseObject getDining_table(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Integer shop_id){
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -72,7 +72,9 @@ public class Dining_tableController {
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
 		try {
-			responseObject.msg = dts.getDining_table(shop_id, null);
+			
+			responseObject.msg = dts.selectByShopId(shop_id);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			responseObject.code=ResponseObject.serverError;
@@ -84,7 +86,12 @@ public class Dining_tableController {
 	
 	@RequestMapping(value="/dining-table/{id}",method=RequestMethod.PUT)
 	@ResponseBody
-	public ResponseObject updateDining_table(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id,@RequestBody Dining_table dt){
+	public ResponseObject updateDining_table(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id,
+			@RequestBody Dining_table dt)
+	{
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -108,16 +115,22 @@ public class Dining_tableController {
 	
 	@RequestMapping(value="/dining-table/{id}",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getDining_tableById(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id){
+	public ResponseObject get(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
 		}*/
-			
+		
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
-		try {					
-			responseObject.msg = dts.getDining_table(null, id).get(0);		
+		try {	
+			
+			responseObject.msg = dts.select(id);	
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			responseObject.code=ResponseObject.serverError;
@@ -129,7 +142,11 @@ public class Dining_tableController {
 	
 	@RequestMapping(value="/dining-table/{id}",method=RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseObject deleteDining_table(HttpServletRequest request,HttpServletResponse response,@PathVariable("id")Integer id){
+	public ResponseObject deleteDining_table(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 		
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -149,5 +166,53 @@ public class Dining_tableController {
 			e.printStackTrace();
 		}
 		return responseObject;
-	}						
-}
+	}	
+	
+
+	@RequestMapping(value="/diningTable/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=diningTableDao.selectByIsUpload();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/diningTable/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			diningTableDao.updateIsUpload(id);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}}
+

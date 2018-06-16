@@ -2,28 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.cmdd.dao.ImageDao">
-	<select id="getImage" resultType="Image">
+	<select id="select" resultType="Image">
 		SELECT id, origin_name, file_size
 		FROM images
 		WHERE id = #{0}
 	</select>
 	
-	<update id="updateImage">
+	<update id="update">
 		UPDATE images
 		SET origin_name = COALESCE(#{origin_name},origin_name),
 			file_size = COALESCE(#{file_size},file_size)
 		WHERE id = #{id}
 	</update>
 	
-	<insert id="addImage" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO images(origin_name, file_size, create_time) 
-		VALUES (#{origin_name}, #{file_size}, now())
+	<insert id="insert" parameterType="Image">
+		<selectKey resultType="Long" order="BEFORE" keyProperty="id">
+				SELECT COALESCE(#{id},UUID_SHORT()) AS id
+		</selectKey>
+		INSERT INTO images(id,origin_name, file_size, create_time) 
+		VALUES (#{id},#{origin_name}, #{file_size}, now())
 	</insert>
 	
-	<delete id="deleteImage">
+	<delete id="delete">
 		DELETE 
 		FROM images
 		WHERE id=#{0}
 	</delete>
+	
+	<!-- 同步数据  -->
+	<select id="selectByIsUpload" resultType="Image">
+		SELECT 
+			id, origin_name, file_size
+		FROM 
+			Image
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			Image
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
+	</update>
+	
 	
 </mapper>

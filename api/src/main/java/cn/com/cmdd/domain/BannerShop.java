@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("BannerShop")
 public class BannerShop {
 	private Integer  id;
-	private Integer banner_id;
+	private Long banner_id;
 	private Integer shop_id;
 	private Integer serial;
 	public Integer getId() {
@@ -14,10 +14,10 @@ public class BannerShop {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getBanner_id() {
+	public Long getBanner_id() {
 		return banner_id;
 	}
-	public void setBanner_id(Integer banner_id) {
+	public void setBanner_id(Long banner_id) {
 		this.banner_id = banner_id;
 	}
 	public Integer getShop_id() {

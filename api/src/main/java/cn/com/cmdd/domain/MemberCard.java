@@ -3,19 +3,21 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("MemberCard")
 public class MemberCard {
-
-    private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+    private Long id;
     private Integer shopId;
     private String name;
     private Double discount;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

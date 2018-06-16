@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Alias("MemberLotteryLog")
 public class MemberLotteryLog {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private String  lottery_detail;
 	private Integer shop_id;
 	private Integer order_id;
@@ -32,11 +33,11 @@ public class MemberLotteryLog {
 	
 	
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

@@ -18,16 +18,6 @@ import cn.com.cmdd.domain.Product;
 import cn.com.cmdd.service.ProductService;
 import cn.com.cmdd.util.ResponseObject;
 
-/**
- * 
- * @typeName ProductController
- * @description 
-		Summary : TODO 
-		Member Property :TODO
-		Member Method:TODO
- * @author yusiqing
- * @date 2017年6月14日 上午10:05:49
- */
 @Controller//@CrossOrigin(origins = "*")
 public class ProductController {
 	
@@ -41,13 +31,10 @@ public class ProductController {
 		
 	@RequestMapping(value="/product",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseObject saveProduct(
-										
-										HttpServletRequest request,
-										HttpServletResponse response,
-										@RequestBody Product product
-										
-										){
+	public ResponseObject saveProduct(HttpServletRequest request,
+									HttpServletResponse response,
+									@RequestBody Product product)
+	{
 											
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -55,15 +42,13 @@ public class ProductController {
 											
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		try {
-			Integer id = productService.saveProduct(product);
-			HashMap<String,Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("Product_id", id);
-			responseObject.msg=resultMap;
+			productService.saveProduct(product);
+		
 		} catch (Exception e) {
-
+				
 			responseObject.code=ResponseObject.serverError;
 			responseObject.msg=e.getLocalizedMessage();
-
+				
 		}
 		return responseObject;
 	}
@@ -140,7 +125,7 @@ public class ProductController {
 											
 											HttpServletRequest request,
 											HttpServletResponse response,		
-											@PathVariable("id")Integer id
+											@PathVariable("id")Long id
 											
 											){
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
@@ -166,12 +151,10 @@ public class ProductController {
 	@RequestMapping(value="/product/{id}",method=RequestMethod.DELETE)
 	@ResponseBody
 	public ResponseObject deleteProduct(
-											
-											HttpServletRequest request,
-											HttpServletResponse response,
-											@PathVariable("id")Integer id
-											
-											){
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
 												
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -180,11 +163,9 @@ public class ProductController {
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		
 		try {
+			
 			productService.deleteProduct(id);
-
-			HashMap<String, Object> resultmap = new HashMap<String,Object>();
-
-			responseObject.msg="操作成功";
+						
 		} catch (Exception e) {
 
 			responseObject.code=ResponseObject.serverError;
@@ -197,9 +178,10 @@ public class ProductController {
 	@RequestMapping(value="/category/{id}/product/list",method=RequestMethod.GET)
 	@ResponseBody
 	public ResponseObject getProductByCategory_id(
-													HttpServletRequest request,
-													HttpServletResponse response,
-													@PathVariable("id")Integer category_id){
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long category_id)
+	{
 														
 		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -214,6 +196,50 @@ public class ProductController {
 			responseObject.code=ResponseObject.serverError;
 			responseObject.msg=e.getLocalizedMessage();
 
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/product/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(HttpServletRequest request,HttpServletResponse response){
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=productDao.selectByIsUpload();
+		
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/product/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,@PathVariable("id")Long id){
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			productDao.updateIsUpload(id);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
 		}
 		return responseObject;
 	}

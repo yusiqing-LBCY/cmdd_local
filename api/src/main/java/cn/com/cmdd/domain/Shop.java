@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Shop {
 	private Integer id;
 	private Integer agent_id;
-	private Integer pay_code_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long pay_code_id;
 	private String 	name;
 	private String 	account;
 	private String 	id_card;
@@ -74,10 +75,10 @@ public class Shop {
 		this.user_key = user_key;
 	}	
 	
-	public Integer getPay_code_id() {
+	public Long getPay_code_id() {
 		return pay_code_id;
 	}
-	public void setPay_code_id(Integer pay_code_id) {
+	public void setPay_code_id(Long pay_code_id) {
 		this.pay_code_id = pay_code_id;
 	}
 	public Integer getId() {

@@ -2,11 +2,15 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("member")
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@Alias("Member")
 public class Member {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private Integer shop_id;
-	private Integer memberCardId;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long memberCardId;
     	private String memberCardName;
 		private Double 	memberCardDiscount;
 	private String 	phone;
@@ -19,10 +23,10 @@ public class Member {
 
 	private Double integral;//20171108+可能是小数
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getPhone() {
@@ -82,11 +86,11 @@ public class Member {
 		this.integral = integral;
 	}
 
-	public Integer getMemberCardId() {
+	public Long getMemberCardId() {
 		return memberCardId;
 	}
 
-	public void setMemberCardId(Integer memberCardId) {
+	public void setMemberCardId(Long memberCardId) {
 		this.memberCardId = memberCardId;
 	}
 

@@ -32,9 +32,9 @@ public class OrderItemService {
 	@Autowired
 	private ProductDao productDao;
 
-	public Integer saveAdditionOrderItem(OrderItem orderItem){
+	public Long saveAdditionOrderItem(OrderItem orderItem){
 		//XXX:-\
-		Integer orderId = orderItem.getOrder_id();
+		Long orderId = orderItem.getOrder_id();
 		List<OrderItem> orderItemList = orderItemDao.selectListByOrderId(orderId);
 		
 		if(orderItemList.size()>0){	
@@ -57,7 +57,7 @@ public class OrderItemService {
 	}
 	
 
-	public List<OrderItem> getOrderItem(Integer id,Integer order_id,Integer category_id,Integer product_id,Date start_time,Date end_time) throws ParseException {
+	public List<OrderItem> getOrderItem(Long id,Long order_id,Long category_id,Long product_id,Date start_time,Date end_time) throws ParseException {
 		
 		
 		if(end_time!=null){
@@ -78,7 +78,7 @@ public class OrderItemService {
 		return orderItems;
 	}
 	
-	public List<ProductCount> getOrderItemCount(String sumField,Integer shop_id,Integer category_id,Integer product_id,Date start_time,Date end_time) throws ParseException {
+	public List<ProductCount> getOrderItemCount(String sumField,Integer shop_id,Long category_id,Long product_id,Date start_time,Date end_time) throws ParseException {
 		
 		if(end_time!=null){
 			String strEnd_time = DateUtil.getYyyyMMdd_(end_time);
@@ -94,7 +94,7 @@ public class OrderItemService {
 		return orderItemCounts.size()==0?null:orderItemCounts;
 	}
 	
-	public double getOrderItemCount_is_lottery(String sumField,Integer shop_id,Integer category_id,Integer product_id,Date start_time,Date end_time) throws ParseException {
+	public double getOrderItemCount_is_lottery(String sumField,Integer shop_id,Long category_id,Long product_id,Date start_time,Date end_time) throws ParseException {
 		
 		if(end_time!=null){
 			String strEnd_time = DateUtil.getYyyyMMdd_(end_time);

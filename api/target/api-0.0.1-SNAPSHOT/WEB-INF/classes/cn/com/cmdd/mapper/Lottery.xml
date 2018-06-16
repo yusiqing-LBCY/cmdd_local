@@ -4,9 +4,9 @@
 <mapper namespace="cn.com.cmdd.dao.LotteryDao">
 
 	
-	<insert id="addLottery" parameterType="Lottery" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO lottery(levels,quantity,shop_id,prize) 
-		VALUES (#{levels},#{quantity},#{shop_id},#{prize})
+	<insert id="addLottery" parameterType="Lottery">
+		INSERT INTO lottery(id,levels,quantity,shop_id,prize) 
+		VALUES (UUID_SHORT(),#{levels},#{quantity},#{shop_id},#{prize})
 	</insert>
 	
 	
@@ -26,6 +26,25 @@
 			prize=COALESCE(#{prize},prize),
 		 	shop_id = COALESCE(#{shop_id},shop_id)
 		WHERE id = #{id}
+	</update>
+	
+	<!-- 同步数据  -->
+	<select id="selectByIsUpload" resultType="Lottery">
+		SELECT 
+			id,levels,quantity,shop_id,prize
+		FROM 
+			Lottery
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			Lottery
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
 	</update>
 
 </mapper>

@@ -31,7 +31,7 @@ public class StaffService {
 	private ShopDao shopDao;
 	
 	@Transactional
-	public Integer addStaff(Staff staff){
+	public void addStaff(Staff staff){
 		
 		String pwdencry = Md5Helper.MD5Encode(staff.getPassword());
 		staff.setPassword(pwdencry);
@@ -50,25 +50,26 @@ public class StaffService {
 		}
 		staff.setAccount(account);
 		staffDao.addStaff(staff);
-		
+		Long staffId = staff.getId();
+		LOGGER.info("staffId --- "+staffId);
 		User user = new User();
 		user.setAccount(staff.getAccount());
 		user.setUser_id(staff.getId());
 		user.setUser_key(staff.getUser_key());
 		userDao.addUser(user);
 		
-		return staff.getId();
+		
 	}	
 	
 	@Transactional
-	public void deleteStaff(int id){
+	public void deleteStaff(Long id){
 		
 		 staffDao.deleteStaff(id);
 	}
 	
 	
 	@Transactional
-	public Staff getStaff(int id){
+	public Staff getStaff(Long id){
 		
 		return staffDao.getStaffById(id);
 	}
@@ -93,7 +94,7 @@ public class StaffService {
 	}
 	
 	@Transactional
-	public Integer updateStaffPassword(int id,String oldPwd,String newPwd) throws Exception{
+	public Long updateStaffPassword(Long id,String oldPwd,String newPwd) throws Exception{
 		
 		Staff staff = staffDao.getStaffById(id);
 		String pwdencry = Md5Helper.MD5Encode(oldPwd);

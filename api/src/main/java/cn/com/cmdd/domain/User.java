@@ -2,28 +2,23 @@ package cn.com.cmdd.domain;
 
 
 
-import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Alias("User")
 public class User {
-	private Integer user_id;
+	private Long user_id;
 	private String  account;
 	private String 	password;
 	private String 	user_key;
 	private Integer is_in_use;
 	
-	/*private Date	create_time;
-	private Date	last_login_time;*/
-
-	public Integer getUser_id() {
+	public Long getUser_id() {
 		return user_id;
 	}
 
-	public void setUser_id(Integer user_id) {
+	public void setUser_id(Long user_id) {
 		this.user_id = user_id;
 	}
 

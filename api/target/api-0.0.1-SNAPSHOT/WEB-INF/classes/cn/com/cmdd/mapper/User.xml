@@ -5,12 +5,19 @@
 
 	
 	<insert id="addUser">
-		INSERT INTO user(user_id,account,user_key) 
-		VALUES (#{user_id},#{account},#{user_key})
+		INSERT INTO 
+			user(user_id,account,user_key) 
+		VALUES 
+			(#{user_id},#{account},#{user_key})
 	</insert>
 	
 	<select id="getUserByAccount" resultType="User">
-		SELECT user_id,account,user_key  FROM user WHERE account = #{0}
+		SELECT 
+			user_id,account,user_key  
+		FROM 
+			user 
+		WHERE 
+			account = #{0}
 	</select>
 	
 	<select id="getUserPlatformByAccount" resultType="User">
@@ -59,5 +66,28 @@
 		WHERE u.account = #{0}
 		
 	</select>
+	
+	<!-- synchronous data  -->
+	<select id="selectByIsUpload" resultType="User">
+		SELECT 
+			user_id,
+			account,
+			user_key
+		FROM 
+			User
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			User
+		SET 
+			is_upload = 1
+		WHERE
+			user_id = #{0}
+	</update>
+	
+	
 	
 </mapper>

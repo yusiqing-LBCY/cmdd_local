@@ -51,9 +51,8 @@ public class PrintJobController{
 		
 	@RequestMapping(value="/print_job",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseObject savePrintJob(									
-											@RequestBody PrintJob printJob
-										){
+	public ResponseObject savePrintJob(@RequestBody PrintJob printJob)
+	{
 											
 		/* if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -63,12 +62,10 @@ public class PrintJobController{
 		
 		try {
 			
-			
 			printJobService.savePrintJob(printJob);
 			
-			responseObject.msg = "保存成功";
-			
 		} catch (Exception e) {
+			
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
 		}
@@ -77,12 +74,11 @@ public class PrintJobController{
 	
 	@RequestMapping(value="/deletePrintJob/{id}",method=RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseObject deletePrintJob(@PathVariable("id")Integer id){
+	public ResponseObject deletePrintJob(@PathVariable("id")Long id){
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);		
 		try {
 			
 			printJobService.removePrintJob(id);
-			responseObject.msg="删除成功";
 			
 		} catch (Exception e) {
 					

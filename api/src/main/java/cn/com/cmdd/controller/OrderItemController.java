@@ -35,15 +35,57 @@ public class OrderItemController {
 	
 	@Autowired
 	private OrderItemDao orderItemDao;
+	@RequestMapping(value="/orderItem/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(HttpServletRequest request,HttpServletResponse response){
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=orderItemDao.selectByIsUpload();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
 	
+	@RequestMapping(value="/orderItem/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			orderItemDao.updateIsUpload(id);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
 	@RequestMapping(value="/shop/{id}/productCount",method= RequestMethod.GET)
 	@ResponseBody
 	public ResponseObject getPorduct(
 										HttpServletRequest request,
 										HttpServletResponse response,
 										@PathVariable("id") Integer shop_id,
-										Integer category_id,
-										Integer product_id,
+										Long category_id,
+										Long product_id,
 										String type,
 										@DateTimeFormat(pattern="yyyy-MM-dd")Date start_time,
 										@DateTimeFormat(pattern="yyyy-MM-dd")Date end_time )
@@ -85,12 +127,8 @@ public class OrderItemController {
 		
 		try {
 	
-			Integer additionOrderItem_id = orderItemService.saveAdditionOrderItem(orderItem);
-			
-			HashMap<String, Object> resultMap = new HashMap<String,Object>();
-			resultMap.put("orderItem_id",additionOrderItem_id);
-			
-			responseObject.msg = resultMap; 
+			orderItemService.saveAdditionOrderItem(orderItem);
+		
 		} catch (Exception e) {
 			responseObject.code = ResponseObject.serverError;
 			responseObject.msg = e.getLocalizedMessage();
@@ -107,7 +145,7 @@ public class OrderItemController {
 	public ResponseObject updateOrder_product(
 												HttpServletRequest request,
 												HttpServletResponse response,
-												@PathVariable("id")Integer ordersItem_id,
+												@PathVariable("id")Long ordersItem_id,
 												@RequestBody OrderItem orderItem)
 	{
 													
@@ -136,7 +174,7 @@ public class OrderItemController {
 	public ResponseObject deleteOrder_product(	
 												HttpServletRequest request,
 												HttpServletResponse response,
-												@PathVariable("id")Integer id){
+												@PathVariable("id")Long id){
 		/*
 		if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
 			return null;
@@ -161,7 +199,7 @@ public class OrderItemController {
 	public ResponseObject get(	
 								HttpServletRequest request,
 								HttpServletResponse response,
-								@PathVariable("id")Integer id
+								@PathVariable("id")Long id
 	){
 
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);

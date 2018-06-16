@@ -37,7 +37,7 @@ public class BannerShopService {
 	}
 	
 	@Transactional
-	public List<BannerShop> getBannerShopByBannerId(int banner_id){
+	public List<BannerShop> getBannerShopByBannerId(Long banner_id){
 		
 		return bannerShopDao.getBannerShopByBannerId(banner_id);
 	}

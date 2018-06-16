@@ -46,7 +46,7 @@ public class BannerShopController {
 	
 	@RequestMapping(value="/banner/{id}/banner_shop/list",method=RequestMethod.GET)
 	@ResponseBody
-	public ResponseObject getBannerShopList(HttpServletRequest request, HttpServletResponse response,@PathVariable("id")int banner_id){
+	public ResponseObject getBannerShopList(HttpServletRequest request, HttpServletResponse response,@PathVariable("id")Long banner_id){
 		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
 		try {
 			responseObject.msg = bannerShopService.getBannerShopByBannerId(banner_id);

@@ -19,15 +19,6 @@ import cn.com.cmdd.domain.Dining_table;
 import cn.com.cmdd.domain.Image;
 import cn.com.cmdd.util.EncodeImgZxing;
 
-/**
- * @typeName Dining_tableService
- * @description 
-		Summary : TODO 
-		Member Property :TODO
-		Member Method:TODO
- * @author yusiqing
- * @date 2017年6月12日 下午1:58:31
- */
 @Service
 @Transactional
 public class Dining_tableService {
@@ -35,7 +26,7 @@ public class Dining_tableService {
 	private final static Logger LOGGER = LoggerFactory.getLogger(Dining_tableService.class);
 	
 	@Autowired
-	private Dining_tableDao dtd;
+	private Dining_tableDao diningTableDao;
 	
 	@Autowired
 	private ImageService imageService;
@@ -43,15 +34,17 @@ public class Dining_tableService {
 	@Autowired
 	private ImageDao imageDao;
 	
-	public Integer saveDining_table(Dining_table dt){
+	public Long saveDining_table(Dining_table dt){
 		 try {
-			dtd.saveDining_table(dt);
+			
+			 diningTableDao.insert(dt);
+			 Long diningTableId = dt.getId();
 			
 			//正式服
-			//sBufferedImage encodeImg = EncodeImgZxing.encodeImg("http://admin.chanmaodd.com/www/#/table/"+dt.getId());
+			//sBufferedImage encodeImg = EncodeImgZxing.encodeImg("http://admin.chanmaodd.com/www/#/table/"+diningTableId);
 			
 			//测试服
-			BufferedImage encodeImg = EncodeImgZxing.encodeImg("http://test-admin.lbcy.com.cn/www/#/table/"+dt.getId());
+			BufferedImage encodeImg = EncodeImgZxing.encodeImg("http://test-admin.lbcy.com.cn/www/#/table/"+diningTableId);
 			
 			
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();			
@@ -60,12 +53,15 @@ public class Dining_tableService {
 			Image image = new Image();
 			image.setFile_size((long)byteArray.length);
 			image.setOrigin_name("桌位id"+dt.getId()+"的二维码图片");
-			imageDao.addImage(image);
-			int saveImageId = imageService.saveImage(image.getId(), byteArray);
-			Dining_table dining_table = new Dining_table();
-			dining_table.setId(dt.getId());
+			imageDao.insert(image);
+			LOGGER.info("imageId ---- "+image.getId());
+			Long saveImageId = imageService.saveImage(image.getId(), byteArray);
+			LOGGER.info("saveImageId ---- "+saveImageId);
+			Dining_table dining_table = new Dining_table();		
+			dining_table.setId(diningTableId);
 			dining_table.setLogo_id(saveImageId);
-			dtd.updateDining_table(dining_table);
+			diningTableDao.updateDining_table(dining_table);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,17 +69,22 @@ public class Dining_tableService {
 		 return dt.getId();
 	}
 	
-	public void deleteDining_table(Integer id){
+	public void deleteDining_table(Long id){
 
-		dtd.deleteDining_table(id);
+		diningTableDao.deleteDining_table(id);
 	}
 	
 	public void updateDining_table(Dining_table dt){
-		dtd.updateDining_table(dt);
+		diningTableDao.updateDining_table(dt);
 	}
 	
-	public List<Dining_table> getDining_table(Integer shop_id, Integer id){
+	public List<Dining_table> selectByShopId(Integer shop_id){
 
-		return dtd.getDining_table(shop_id,id);
+		return diningTableDao.getDining_table(shop_id,null);
+	}
+	
+	public Dining_table select(Long id){
+
+		return diningTableDao.select(id);
 	}
 }

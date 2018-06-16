@@ -2,11 +2,14 @@ package cn.com.cmdd.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("Banner")
 public class Banner {
 	private Integer  id;
 	private Integer agent_id;
-	private Integer banner_id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long banner_id;
 	private Integer serial;
 	private String  name;
 	
@@ -42,10 +45,10 @@ public class Banner {
 	public void setAgent_id(Integer agent_id) {
 		this.agent_id = agent_id;
 	}
-	public Integer getBanner_id() {
+	public Long getBanner_id() {
 		return banner_id;
 	}
-	public void setBanner_id(Integer banner_id) {
+	public void setBanner_id(Long banner_id) {
 		this.banner_id = banner_id;
 	}
 	

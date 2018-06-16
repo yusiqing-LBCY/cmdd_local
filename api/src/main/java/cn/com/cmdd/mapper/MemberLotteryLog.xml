@@ -11,9 +11,9 @@
 		SELECT * FROM member_lottery_log WHERE order_id = #{0} ORDER BY id
 	</select>
 	
-	<insert id="addMemberLotteryLog" parameterType="MemberLotteryLog" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO member_lottery_log(lottery_detail,shop_id,order_id,is_cash,phone,create_time,exchange_time) 
-		VALUES (#{lottery_detail},#{shop_id},#{order_id},#{is_cash},#{phone},now(),now())
+	<insert id="addMemberLotteryLog" parameterType="MemberLotteryLog">
+		INSERT INTO member_lottery_log(id,lottery_detail,shop_id,order_id,is_cash,phone,create_time,exchange_time) 
+		VALUES (UUID_SHORT(),#{lottery_detail},#{shop_id},#{order_id},#{is_cash},#{phone},now(),now())
 	</insert>
 	
 	<select id="getMemberLotteryLogById" resultType="MemberLotteryLog" parameterType="int">
@@ -41,6 +41,25 @@
 		FROM member_lottery_log
 		WHERE id = #{id}
 	</delete>
+	
+	<!-- 同步数据  -->
+	<select id="selectByIsUpload" resultType="MemberLotteryLog">
+		SELECT 
+			*
+		FROM 
+			Member_Lottery_Log
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			Member_Lottery_Log
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
+	</update>
 
 </mapper>
 

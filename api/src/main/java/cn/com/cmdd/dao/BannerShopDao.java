@@ -8,12 +8,12 @@ public interface BannerShopDao {
 	
 	void addBannerShop(BannerShop bannerShop);
 	
-	void deleteBannerShop(int id);
+	void deleteBannerShop(Integer id);
 	
 	void updateBannerShop(BannerShop bannerShop);
 	
-	List<BannerShop> getBannerShopByBannerId(int bannerId);
+	List<BannerShop> getBannerShopByBannerId(Long bannerId);
 	
-	List<BannerShop> getBannerShopByShopId(int shopId);
+	List<BannerShop> getBannerShopByShopId(Integer shopId);
 
 }

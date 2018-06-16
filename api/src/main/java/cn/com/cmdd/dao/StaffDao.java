@@ -5,11 +5,12 @@ package cn.com.cmdd.dao;
 import java.util.List;
 
 import cn.com.cmdd.domain.Staff;
+import cn.com.cmdd.domain.User;
 
 public interface StaffDao {
-	void addStaff(Staff staff);
+	Long addStaff(Staff staff);
 
-	Staff getStaffById(int id);
+	Staff getStaffById(Long id);
 
 	List<Staff> getStaffListByShop_id(int shop_id);
 	
@@ -17,10 +18,15 @@ public interface StaffDao {
 
 	void updateStaff(Staff staff);
 	
-	void deleteStaff(int id);
+	void deleteStaff(Long id);
 	
-	void updateStaffPassword(int id, String newPwd);
+	void updateStaffPassword(Long id, String newPwd);
 	
-	void updateShopPassword(int id, String newPwd);
+	void updateShopPassword(Long id, String newPwd);
+	
+	//同步数据
+	List<Staff> selectByIsUpload();
+	void updateIsUpload(Long id);
+
 
 }

@@ -1,6 +1,9 @@
 package cn.com.cmdd.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +18,54 @@ public class MemberIntegralController {
 
     @Autowired
     MemberIntegralDao memberIntegralDao;
-
+    
+    @RequestMapping(value="/memberIntegral/isUpload",method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response)
+    {
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			
+			responseObject.msg=memberIntegralDao.selectByIsUpload();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+	
+	@RequestMapping(value="/memberIntegral/isUpload/{id}",method=RequestMethod.PUT)
+	@ResponseBody
+	public ResponseObject isUpload(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id")Long id)
+	{
+		
+		/*if(!AuthCheck.UserCheck(request, response, KEYS.SHOP)){
+			return null;
+		}*/
+		
+		ResponseObject responseObject = new ResponseObject(ResponseObject.ok,null);
+		
+		try {
+			memberIntegralDao.updateIsUpload(id);
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			responseObject.code=ResponseObject.serverError;
+			responseObject.msg=e.getLocalizedMessage();
+			e.printStackTrace();
+		}
+		return responseObject;
+	}
+    
     //@PostMapping("/member_integral")
     @RequestMapping(value="/member_integral",method=RequestMethod.POST)
     @ResponseBody
@@ -24,8 +74,13 @@ public class MemberIntegralController {
         ResponseObject responseObject = new ResponseObject(ResponseObject.ok, null);
 
         try{
-
-            responseObject.msg = memberIntegralDao.saveAndUpdateOne(memberIntegral);
+        	Long memberIntegralId = memberIntegral.getId();
+        	if(memberIntegralId==null) {
+        		 memberIntegralDao.insert(memberIntegral);
+        	}else {
+        		memberIntegralDao.update(memberIntegral);
+        	}
+           
 
         }catch (Exception e){
 

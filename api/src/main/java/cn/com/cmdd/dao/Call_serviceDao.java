@@ -11,8 +11,8 @@ public interface Call_serviceDao {
 	void saveCall_service(Call_service call_service);
 	
 	void deleteCall_service(@Param("id") Integer id);
-	void deleteByOrderId(@Param("order_id")Integer orderId);
-	void deleteByDiningTableId(@Param("dining_table_id")Integer diningTableId);
+	void deleteByOrderId(@Param("order_id")Long orderId);
+	void deleteByDiningTableId(@Param("dining_table_id")Long diningTableId);
 	
 	List<Call_service> getCall_service(@Param("shop_id") Integer shop_id);
 	void updateCall_service(Call_service call_service);

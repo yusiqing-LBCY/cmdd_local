@@ -39,10 +39,10 @@ public class BannerService {
 	}	
 	
 	@Transactional
-	public Integer addImage(int id, byte[] file) throws IOException {
+	public Long addImage(Integer id, byte[] file) throws IOException {
 		Banner banner = new Banner();
 		banner = bannerDao.getBanner(id);
-		Integer image_id = banner.getBanner_id();
+		Long image_id = banner.getBanner_id();
 		if(image_id != 0){
 			image_id = imageService.saveImage(image_id,file);
 		}else{
@@ -60,8 +60,8 @@ public class BannerService {
 	public void deleteBanner(int id){
 		
 		Banner banner = bannerDao.getBanner(id);
-		 Integer banner_id = banner.getBanner_id();
-		 imageDao.deleteImage(banner_id);
+		 Long banner_id = banner.getBanner_id();
+		 imageDao.delete(banner_id);
 		 bannerDao.deleteBanner(id);
 		 List<BannerShop> list = bannerShopDao.getBannerShopByBannerId(banner_id);
 		 for (BannerShop bannerShop:list){

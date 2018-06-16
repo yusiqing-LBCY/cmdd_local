@@ -1,6 +1,5 @@
 package cn.com.cmdd.service;
 
-
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
@@ -22,18 +21,18 @@ public class ImageService {
 	private ImageDao imageDao;
 	
 	
-	public byte[] getImage(Integer id) {
+	public byte[] getImage(Long id) {
 		byte[] result = LevelDBAPI.get(id);
 		log.info("image size is" + result.length);
 		return result;
 	}
 	
-	public int saveImage(Integer id,byte[] file){
+	public Long saveImage(Long id,byte[] file){
 		LevelDBAPI.post(id, file);
 		
 		return id;
 	}
-	public Integer DeleteImage(Integer id) {
+	public Long DeleteImage(Long id) {
 		if(id > 0)
 			LevelDBAPI.delete(id);
 		
@@ -41,12 +40,12 @@ public class ImageService {
 	}
 	
 	@Transactional
-	public int addImage(Integer id, MultipartFile file) throws IOException {
+	public Long addImage(Long id, MultipartFile file) throws IOException{
 		if (id != null && id>0){
-			Image image = imageDao.getImage(id);
+			Image image = imageDao.select(id);
 			image.setOrigin_name(file.getOriginalFilename());
 			image.setFile_size(file.getSize());
-			imageDao.addImage(image);
+			imageDao.update(image);
 			saveImage(id,file.getBytes());
 			return id;
 		}
@@ -54,9 +53,10 @@ public class ImageService {
 		Image image = new Image();
 		image.setOrigin_name(file.getOriginalFilename());
 		image.setFile_size(file.getSize());
-		imageDao.addImage(image);
-		int image_id = image.getId();
+		imageDao.insert(image);
+		Long image_id = image.getId();
 		saveImage(image_id,file.getBytes());
 		return image_id;
 	}
+	
 }

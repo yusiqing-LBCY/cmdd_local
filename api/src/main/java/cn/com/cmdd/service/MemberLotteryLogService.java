@@ -23,7 +23,7 @@ public class MemberLotteryLogService {
 	
 	
 	@Transactional
-	public Integer addMemberLotteryLog(MemberLotteryLog memberLotteryLog)throws Exception{
+	public void addMemberLotteryLog(MemberLotteryLog memberLotteryLog)throws Exception{
 		
 		int order_id = memberLotteryLog.getOrder_id();
 		List<MemberLotteryLog> memberLotteryLogListByOrderId = memberLotteryLogDao.getMemberLotteryLogListByOrderId(order_id);
@@ -34,19 +34,19 @@ public class MemberLotteryLogService {
 		}
 		
 		memberLotteryLogDao.addMemberLotteryLog(memberLotteryLog);
-		return memberLotteryLog.getId();
+		
 	}	
 	
 	
 	@Transactional
-	public void deleteMemberLotteryLog(int id){
+	public void deleteMemberLotteryLog(Long id){
 		
 		 memberLotteryLogDao.deleteMemberLotteryLog(id);
 	}
 	
 	
 	@Transactional
-	public MemberLotteryLog getMemberLotteryLog(int id){
+	public MemberLotteryLog getMemberLotteryLog(Long id){
 		
 		return memberLotteryLogDao.getMemberLotteryLogById(id);
 	}
@@ -65,7 +65,7 @@ public class MemberLotteryLogService {
 	}
 	
 	@Transactional
-	public MemberLotteryLog getMemberLotteryLogByOrderId(int order_id){
+	public MemberLotteryLog getMemberLotteryLogByOrderId(Long order_id){
 	
 		return memberLotteryLogDao.getMemberLotteryLogByOrderId(order_id);
 	}

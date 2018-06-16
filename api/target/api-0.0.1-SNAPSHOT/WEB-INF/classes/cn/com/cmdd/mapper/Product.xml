@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.cmdd.dao.ProductDao">
-	<insert id="insert" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="Product">
 		INSERT
 		INTO product(
+			id,
 			shop_id,
 			category_id,
 			logo_id,
@@ -20,9 +21,9 @@
 			is_member_integral,
 			is_use_member_price,
 			member_price,
-			description
-			)
+			description)
 		VALUES(
+			UUID_SHORT(),
 			#{shop_id},
 			#{category_id},
 			#{logo_id},
@@ -134,6 +135,41 @@
 		</trim>
 		ORDER BY p.id ASC
 	</select>
+	
+	<!-- 同步数据  -->
+	<select id="selectByIsUpload" resultType="Product">
+		SELECT 
+			id,
+			shop_id,
+			category_id,
+			logo_id,
+			name,
+			unit,
+			unit_price,
+			is_promotion,
+			is_in_use,
+			is_auto,
+			is_discount,
+			promotion_price,
+			is_member_discount isMemberDiscount,
+			is_member_integral isMemberIntegral,
+			is_use_member_price,
+			member_price memberPrice,
+			description
+		FROM 
+			Product
+		WHERE 
+			is_upload = 0 or is_upload is null
+	</select>
+	
+	<update id="updateIsUpload">
+		UPDATE 
+			Product
+		SET 
+			is_upload = 1
+		WHERE
+			id = #{0}
+	</update>
 
 
 </mapper>

@@ -1,17 +1,20 @@
 package cn.com.cmdd.domain;
 import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Alias("Lottery")
 public class Lottery {
-	private Integer id;
+	@JsonFormat(shape=JsonFormat.Shape.STRING)
+	private Long id;
 	private Integer levels;
 	private Double 	quantity;
 	private Integer shop_id;
 	private String 	prize;
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Integer getLevels() {

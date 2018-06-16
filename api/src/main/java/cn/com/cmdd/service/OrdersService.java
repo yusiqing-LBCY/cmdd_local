@@ -61,13 +61,14 @@ public class OrdersService{
 	private Call_serviceDao callServiceDao;
 	
 	@Transactional
-	public Integer saveOrders(Orders orders){
+	public void  saveOrders(Orders orders){
 		
-		orders.setOrder_no(DateUtil.getYy_MM_dd(new Date())+orders.getDining_table_id());
-		
+		String formatDate = DateUtil.getYy_MM_dd(new Date());
+		LOGGER.info("formatDate --- "+formatDate);
+		String orderSerialId = orders.getSerial_id();
+		LOGGER.info("orderSerialId --- "+orderSerialId);		
+		orders.setOrder_no(formatDate+orderSerialId);
 		orderDao.saveOrders(orders);
-				
-		return orders.getId();
 	}
 	
 	public void updateOrders(Orders orders){
@@ -80,7 +81,7 @@ public class OrdersService{
 								  Integer id,
 								  Integer page_size,
 								  Integer page_no,
-								  Integer dining_table_id,
+								  Long dining_table_id,
 								  Date start_time,
 								  Date end_time,
 								  List<Integer> statusList,
@@ -286,7 +287,7 @@ public class OrdersService{
 				tradeMemberCode= 0;
 			}else{
 				tradeMemberCode= 115;
-				Integer memberId= orders.getMemberId();
+				Long memberId= orders.getMemberId();
 				Member member =memberDao.getMemberById(memberId);
 
 				MemberRechargeLog memberRechargeLog = new MemberRechargeLog();
@@ -398,7 +399,7 @@ public class OrdersService{
 		//累积会员积分
 		if(orders.getIsUseMember()==1){
 
-			Integer memberId= orders.getMemberId();
+			Long memberId= orders.getMemberId();
 			//TODO:规范
 			//TODO:会员不要有删除接口,或者订单但是状态
 			Member member = memberDao.getMemberById(memberId);
@@ -448,9 +449,9 @@ public class OrdersService{
 		//		1.联表修改失败
 		// 	    2是否查询多余数据
 		orderDao.updateOrders(orders);
-		List<Integer> idList = orderDao.selectIdListByPId(orders.getId());
+		List<Long> idList = orderDao.selectIdListByPId(orders.getId());
 		if(idList.size()>0){
-			for (Integer id:idList
+			for (Long id:idList
 				 ) {
 				Orders order = new Orders();
 				order.setId(id);
@@ -462,7 +463,7 @@ public class OrdersService{
 		}
 	}
 
-	public void unifyOrder(Integer diningTablePid,List<Integer> diningTableIdList){
+	public void unifyOrder(Long diningTablePid,List<Long> diningTableIdList){
 
 		orderDao.unifyOrderNo(diningTablePid,diningTableIdList);
 	}
@@ -471,10 +472,10 @@ public class OrdersService{
 	 * 	1.dining_tale:status 0--->1
 	 * 	2.创建订单 
 	 */
-	 public void openTable(Integer dingTableId,Orders orders){
+	 public void openTable(Long dingTableId,Orders orders){
 		 
 		 diningTableDao.updateStatus(1, dingTableId);
-		 orders.setOrder_no(DateUtil.getYy_MM_dd(new Date())+orders.getDining_table_id());
+		 orders.setOrder_no(DateUtil.getYy_MM_dd(new Date())+orders.getSerial_id());
 		 orderDao.saveOrders(orders);
 	
 	 }
@@ -482,12 +483,12 @@ public class OrdersService{
 	/**
 	 * 清桌：
 	 */
-	public void clearTable(Integer diningTableId) {
+	public void clearTable(Long diningTableId) {
 		
 		callServiceDao.deleteByDiningTableId(diningTableId);
 		
 		Orders orders = orderDao.selectByDiningTableAndStatusId(diningTableId, 0);
-		Integer orderId = orders.getId();
+		Long orderId = orders.getId();
 		
 		orderItemDao.deleteByOrderId(orderId);
 		
